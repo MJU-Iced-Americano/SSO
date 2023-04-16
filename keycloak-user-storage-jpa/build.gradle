@@ -1,0 +1,46 @@
+plugins {
+    id 'java'
+    id 'maven-publish'
+}
+
+group 'org.mju'
+description = 'Keycloak : user-storage-jpa'
+java.sourceCompatibility = 11
+
+repositories {
+    mavenCentral()
+
+    maven {
+        url = uri('https://repository.jboss.org/nexus/content/groups/public/')
+    }
+
+    maven {
+        url = uri('https://repo.maven.apache.org/maven2/')
+    }
+}
+
+dependencies {
+    implementation 'com.fasterxml.jackson.core:jackson-databind:2.9.5'
+
+    testImplementation 'org.jboss.arquillian.junit:arquillian-junit-container:1.4.0.Final'
+    testImplementation 'junit:junit:4.12'
+    testImplementation 'org.keycloak:keycloak-test-helper:21.0.2'
+
+    compileOnly 'org.keycloak:keycloak-core:21.0.2'
+    compileOnly 'org.keycloak:keycloak-server-spi:21.0.2'
+    compileOnly 'org.keycloak:keycloak-model-jpa:21.0.2'
+    compileOnly 'org.jboss.logging:jboss-logging:3.4.0.Final'
+    compileOnly 'org.hibernate.javax.persistence:hibernate-jpa-2.1-api:1.0.0.Final'
+}
+
+publishing {
+    publications {
+        maven(MavenPublication) {
+            from(components.java)
+        }
+    }
+}
+
+tasks.withType(JavaCompile) {
+    options.encoding = 'UTF-8'
+}
