@@ -98,3 +98,14 @@ fabric.properties
 
 .idea
 
+keycloak-member-storage-jpa/build
+
+.DS_Store
+
+.gradle/
+**/.gradle/
+.gradle
+**/build/
+!src/**/build/
+*.gradle
+
