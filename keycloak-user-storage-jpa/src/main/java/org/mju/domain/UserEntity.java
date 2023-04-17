@@ -1,5 +1,6 @@
 package org.mju.domain;
 
+import java.time.LocalDateTime;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -32,6 +33,8 @@ public class UserEntity {
     @Embedded
     private AdditionalInformation additionalInformation = new AdditionalInformation();
 
+    private LocalDateTime modifiedDate;
+
     protected UserEntity() {
     }
 
@@ -45,6 +48,7 @@ public class UserEntity {
         this.email = email;
         this.password = password;
         this.additionalInformation = additionalInformation;
+        this.change();
     }
 
     public String getId() {
@@ -65,5 +69,9 @@ public class UserEntity {
 
     public AdditionalInformation getAdditionalInformation() {
         return additionalInformation;
+    }
+
+    protected void change() {
+        this.modifiedDate = LocalDateTime.now();
     }
 }

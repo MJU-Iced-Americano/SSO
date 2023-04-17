@@ -11,6 +11,10 @@ public class Birth {
         localDate = LocalDate.now();
     }
 
+    private Birth(String value) {
+        this.localDate = LocalDate.parse(value);
+    }
+
     public Birth(LocalDate localDate) {
         this.localDate = localDate;
     }
