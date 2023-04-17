@@ -1,3 +1,4 @@
 rootProject.name = 'sso'
 
 include 'keycloak-user-storage-jpa'
+include 'sso-client'
