@@ -16,7 +16,10 @@
  */
 package org.mju.domain;
 
+import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -37,10 +40,15 @@ public class UserAdapter extends AbstractUserAdapterFederatedStorage {
     private static final String PASSWORD_FIELD_NAME = "password";
     private static final String USERNAME_FIELD_NAME = "username";
 
-    protected UserEntity entity;
-    protected String keycloakId;
+    protected final UserEntity entity;
+    protected final String keycloakId;
 
-    public UserAdapter(KeycloakSession session, RealmModel realm, ComponentModel model, UserEntity entity) {
+    public UserAdapter(
+            final KeycloakSession session,
+            final RealmModel realm,
+            final ComponentModel model,
+            final UserEntity entity
+    ) {
         super(session, realm, model);
         this.entity = entity;
         keycloakId = StorageId.keycloakId(model, entity.getId());
@@ -70,34 +78,78 @@ public class UserAdapter extends AbstractUserAdapterFederatedStorage {
     }
 
     @Override
+    public void removeAttribute(String name) {
+        setFieldValueByName(name, null);
+    }
+
+    @Override
     public void setSingleAttribute(String name, String value) {
         setFieldValueByName(name, value);
     }
 
     @Override
     public void setAttribute(final String name, final List<String> values) {
-        super.setAttribute(name, values);
+        for (String value : values) {
+            setFieldValueByName(name, value);
+        }
     }
 
     private void setFieldValueByName(final String name, final String value) {
         try {
+            entity.change();
+            if (isHibernateField(name)) {
+                return;
+            }
+            if (name.equals(ENABLED_FIELD_NAME) || name.equals(EMAIL_VERIFIED_FIELD_NAME)) {
+                super.setSingleAttribute(name, value);
+                return;
+            }
             if (isKeycloakBasicInformationField(name)) {
                 Field field = entity.getClass().getDeclaredField(name);
-                setFieldBy(field, value);
+                setFieldBy(entity, field, value);
                 super.setSingleAttribute(name, value);
-            } else if (isAdditionalInformationField(name)) {
+                return;
+            }
+            if (isAdditionalInformationField(name)) {
                 Field field = entity.getAdditionalInformation().getClass().getDeclaredField(name);
-                setFieldBy(field, value);
-            } else {
-                if (name.equals(ENABLED_FIELD_NAME) || name.equals(EMAIL_VERIFIED_FIELD_NAME)) {
-                    super.setSingleAttribute(name, value);
+                if (field.getType().isEnum()) {
+                    setEnumField(field, value);
                 } else {
-                    logger.error("Set field Error name : " + name + " value : " + value);
+                    setObjectField(field, value);
                 }
             }
-        } catch (NoSuchFieldException e) {
+        } catch (NoSuchFieldException | NoSuchMethodException | InstantiationException | IllegalAccessException |
+                 InvocationTargetException e) {
+            logger.error("Set field Error name : " + name + " value : " + value);
             throw new RuntimeException(e);
         }
+    }
+
+    private void setObjectField(final Field field, final String value)
+            throws NoSuchMethodException, InstantiationException, IllegalAccessException, InvocationTargetException {
+        Constructor<?> constructor = field.getType().getDeclaredConstructor(String.class);
+        constructor.setAccessible(true);
+        Object fieldValue = constructor.newInstance(value);
+        constructor.setAccessible(false);
+        setFieldBy(entity.getAdditionalInformation(), field, fieldValue);
+    }
+
+    private void setEnumField(final Field field, final String value)
+            throws NoSuchMethodException, IllegalAccessException, InvocationTargetException {
+        Object[] enumConstants = field.getType().getEnumConstants();
+        for (Object enumConstant : enumConstants) {
+            Method method = enumConstant.getClass().getMethod("name");
+            String enumName = (String) method.invoke(enumConstant);
+            if (enumName.equals(value)) {
+                setFieldBy(entity.getAdditionalInformation(), field, enumConstant);
+                return;
+            }
+        }
+        setFieldBy(entity.getAdditionalInformation(), field, null);
+    }
+
+    private static boolean isHibernateField(final String name) {
+        return name.equals("$$_hibernate_attributeInterceptor") || name.equals("$$_hibernate_compositeOwners");
     }
 
     private boolean isKeycloakBasicInformationField(final String name) {
@@ -110,19 +162,10 @@ public class UserAdapter extends AbstractUserAdapterFederatedStorage {
                 .anyMatch(f -> f.getName().equals(name));
     }
 
-    private void setFieldBy(final Field field, final String value) {
-        try {
-            field.setAccessible(true);
-            field.set(entity, value);
-            field.setAccessible(false);
-        } catch (IllegalAccessException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-    @Override
-    public void removeAttribute(String name) {
-        setFieldValueByName(name, null);
+    private void setFieldBy(final Object entity, final Field field, final Object value) throws IllegalAccessException {
+        field.setAccessible(true);
+        field.set(entity, value);
+        field.setAccessible(false);
     }
 
     @Override
@@ -142,6 +185,7 @@ public class UserAdapter extends AbstractUserAdapterFederatedStorage {
             }
             field.setAccessible(false);
         }
+        all.keySet().removeIf(UserAdapter::isHibernateField);
         return all;
     }
 }
