@@ -17,10 +17,10 @@ import org.testcontainers.junit.jupiter.Testcontainers;
 public class KeycloakTest {
     private static final int KEYCLOAK_SERVER_PORT = 8080;
     private static final String KEYCLOAK_SERVICE_NAME = "keycloak";
-    private static final String CLIENT_ID = "admin-cli";
-    private static final String ADMIN_PASSWORD = "1234";
     private static final String REALM_NAME = "master";
+    private static final String CLIENT_ID = "admin-cli";
     private static final String ADMIN_USERNAME = "admin";
+    private static final String ADMIN_PASSWORD = "1234";
     private static final String KEYCLOAK_SERVER_URL;
     private static final String KEYCLOAK_DOCKER_COMPOSE_FILE_PATH;
 
@@ -64,13 +64,13 @@ public class KeycloakTest {
         UsersResource users = keycloak.realm(REALM_NAME).users();
 
         for (UserRepresentation userRepresentation : users.list()) {
-            if (isAdminUser(userRepresentation)) {
+            if (isNotAdminUser(userRepresentation)) {
                 users.delete(userRepresentation.getId()).close();
             }
         }
     }
 
-    private boolean isAdminUser(final UserRepresentation userRepresentation) {
+    private boolean isNotAdminUser(final UserRepresentation userRepresentation) {
         return !userRepresentation.getUsername().equals(ADMIN_USERNAME);
     }
 }
