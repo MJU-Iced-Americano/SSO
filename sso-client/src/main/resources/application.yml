@@ -1,0 +1,13 @@
+server:
+  port: 80
+
+keycloak:
+  server:
+    url: http://localhost:8080
+  realm: master
+  client:
+    id: admin-cli
+  admin:
+    name: admin
+    password: 1234
+
