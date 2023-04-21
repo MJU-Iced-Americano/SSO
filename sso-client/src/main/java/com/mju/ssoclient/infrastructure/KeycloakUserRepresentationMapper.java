@@ -43,4 +43,12 @@ class KeycloakUserRepresentationMapper {
         }
         return attributes;
     }
+
+    public String userIdByEqualUsernameFrom(final List<UserRepresentation> users, final String username) {
+        return users.stream()
+                .filter(u -> u.getUsername().equals(username))
+                .findAny()
+                .orElseThrow(UserCreateFailException::new)
+                .getId();
+    }
 }

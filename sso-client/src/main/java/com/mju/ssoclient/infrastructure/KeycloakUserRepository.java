@@ -1,7 +1,6 @@
 package com.mju.ssoclient.infrastructure;
 
 import com.mju.ssoclient.domain.UserRepository;
-import com.mju.ssoclient.exception.UserCreateFailException;
 import javax.ws.rs.core.Response;
 import lombok.extern.slf4j.Slf4j;
 import org.keycloak.OAuth2Constants;
@@ -57,10 +56,8 @@ class KeycloakUserRepository implements UserRepository {
             keycloakUserResponseValidator.validationUserCreateResponse(userCreateResponse);
         }
 
-        return usersResource.search(userRepresentation.getUsername()).stream()
-                .filter(u -> u.getUsername().equals(userRepresentation.getUsername()))
-                .findAny()
-                .orElseThrow(UserCreateFailException::new)
-                .getId();
+        String createUserUsername = userRepresentation.getUsername();
+        return keycloakUserRepresentationMapper
+                .userIdByEqualUsernameFrom(usersResource.search(createUserUsername), createUserUsername);
     }
 }

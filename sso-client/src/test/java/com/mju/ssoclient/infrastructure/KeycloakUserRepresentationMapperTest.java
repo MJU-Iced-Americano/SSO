@@ -1,11 +1,14 @@
 package com.mju.ssoclient.infrastructure;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
+import com.mju.ssoclient.exception.UserCreateFailException;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -68,5 +71,43 @@ class KeycloakUserRepresentationMapperTest {
                 () -> assertThat(userRepresentationAttributes.get("gender").get(0)).isEqualTo(gender.toString()),
                 () -> assertThat(userRepresentationAttributes.get("birth").get(0)).isEqualTo(birth.toString())
         );
+    }
+
+    @DisplayName("유저 목록 중 이름이 일치하는 유저의 ID를 반환한다.")
+    @Test
+    void userIdByEqualUsernameFrom() {
+        // given
+        String userId = UUID.randomUUID().toString();
+        String username = "equalUsername";
+        UserRepresentation userThatEqualToUsername = new UserRepresentation();
+        userThatEqualToUsername.setUsername(username);
+        userThatEqualToUsername.setId(userId);
+
+        UserRepresentation userThatNotEqualToUsername = new UserRepresentation();
+        userThatNotEqualToUsername.setUsername("notEqualUsername");
+        userThatNotEqualToUsername.setUsername(UUID.randomUUID().toString());
+
+        List<UserRepresentation> userRepresentations = List.of(userThatNotEqualToUsername, userThatEqualToUsername);
+
+        // when & then
+        assertThat(keycloakUserRepresentationMapper.userIdByEqualUsernameFrom(userRepresentations, username))
+                .isEqualTo(userId);
+    }
+
+    @DisplayName("유저 목록 중 이름이 일치하는 유저가 없는 경우 예외가 발생한다.")
+    @Test
+    void userIdByEqualUsernameFromUsersNotContainUsernameEqualUser() {
+        // given
+        String userId = UUID.randomUUID().toString();
+        UserRepresentation userThatEqualToUsername = new UserRepresentation();
+        userThatEqualToUsername.setUsername("equalUsername");
+        userThatEqualToUsername.setId(userId);
+
+        List<UserRepresentation> userRepresentations = List.of(userThatEqualToUsername);
+
+        // when & then
+        assertThatThrownBy(
+                () -> keycloakUserRepresentationMapper.userIdByEqualUsernameFrom(userRepresentations, "존재하지 않는 이름")
+        ).isInstanceOf(UserCreateFailException.class);
     }
 }
