@@ -8,7 +8,7 @@ import org.mju.domain.UserEntity;
 import org.springframework.stereotype.Component;
 
 @Component
-public class UserMapper {
+class UserMapper {
     public UserEntity userFrom(UserJoinRequest userJoinRequest) {
         AdditionalInformation additionalInformation = new AdditionalInformation(
                 userJoinRequest.getNickname(),
