@@ -3,10 +3,6 @@ package com.mju.ssoclient.infrastructure;
 import com.mju.ssoclient.domain.UserRepository;
 import com.mju.ssoclient.exception.AlreadyExistUser;
 import com.mju.ssoclient.exception.UserCreateFailException;
-import java.lang.reflect.Field;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 import javax.ws.rs.core.Response;
 import lombok.extern.slf4j.Slf4j;
 import org.keycloak.OAuth2Constants;
@@ -21,16 +17,20 @@ import org.springframework.stereotype.Repository;
 
 @Slf4j
 @Repository
-public class KeycloakUserRepository implements UserRepository {
+class KeycloakUserRepository implements UserRepository {
     private final UsersResource usersResource;
+    private final KeycloakUserRepresentationMapper keycloakUserRepresentationMapper;
 
     private KeycloakUserRepository(
-            @Value("${keycloak.server.url}") String keycloakServerUrl,
-            @Value("${keycloak.realm}") String realmName,
-            @Value("${keycloak.client.id}") String clientId,
-            @Value("${keycloak.admin.name}") String adminUserName,
-            @Value("${keycloak.admin.password}") String adminPassword
+            final KeycloakUserRepresentationMapper keycloakUserRepresentationMapper,
+            @Value("${keycloak.server.url}") final String keycloakServerUrl,
+            @Value("${keycloak.realm}") final String realmName,
+            @Value("${keycloak.client.id}") final String clientId,
+            @Value("${keycloak.admin.name}") final String adminUserName,
+            @Value("${keycloak.admin.password}") final String adminPassword
     ) {
+        this.keycloakUserRepresentationMapper = keycloakUserRepresentationMapper;
+
         Keycloak keycloak = KeycloakBuilder.builder()
                 .serverUrl(keycloakServerUrl)
                 .grantType(OAuth2Constants.PASSWORD)
@@ -47,11 +47,12 @@ public class KeycloakUserRepository implements UserRepository {
     public String join(final UserEntity user) {
         log.info("join username : {}, email : {}", user.getUsername(), user.getEmail());
 
-        UserRepresentation userRepresentation = userRepresentationFrom(user);
+        UserRepresentation userRepresentation = keycloakUserRepresentationMapper.userRepresentationFrom(user);
 
         synchronized (usersResource) {
-            Response response = usersResource.create(userRepresentation);
-            validationUserCreate(response);
+            Response userCreateResponse = usersResource.create(userRepresentation);
+
+            validationUserCreate(userCreateResponse);
         }
 
         return usersResource.search(userRepresentation.getUsername()).stream()
@@ -59,31 +60,6 @@ public class KeycloakUserRepository implements UserRepository {
                 .findAny()
                 .orElseThrow(UserCreateFailException::new)
                 .getId();
-    }
-
-    private UserRepresentation userRepresentationFrom(final UserEntity user) {
-        UserRepresentation userRepresentation = new UserRepresentation();
-        userRepresentation.setEnabled(true);
-        userRepresentation.setUsername(user.getUsername());
-        userRepresentation.setFirstName("");
-        userRepresentation.setLastName("");
-        userRepresentation.setEmail(user.getEmail());
-        userRepresentation.setAttributes(attributesFrom(user.getAdditionalInformation()));
-        return userRepresentation;
-    }
-
-    private Map<String, List<String>> attributesFrom(final Object object) {
-        Map<String, List<String>> attributes = new HashMap<>();
-        for (Field field : object.getClass().getDeclaredFields()) {
-            field.setAccessible(true);
-            try {
-                attributes.put(field.getName(), List.of(field.get(object).toString()));
-            } catch (IllegalAccessException e) {
-                throw new UserCreateFailException();
-            }
-            field.setAccessible(false);
-        }
-        return attributes;
     }
 
     private void validationUserCreate(final Response response) {

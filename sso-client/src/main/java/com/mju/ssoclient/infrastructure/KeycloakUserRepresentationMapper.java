@@ -8,8 +8,10 @@ import java.util.Map;
 import org.keycloak.representations.idm.CredentialRepresentation;
 import org.keycloak.representations.idm.UserRepresentation;
 import org.mju.domain.UserEntity;
+import org.springframework.stereotype.Component;
 
-public class KeycloakUserRepresentationMapper {
+@Component
+class KeycloakUserRepresentationMapper {
     public UserRepresentation userRepresentationFrom(final UserEntity user) {
         UserRepresentation userRepresentation = new UserRepresentation();
         userRepresentation.setEnabled(true);
