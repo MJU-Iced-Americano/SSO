@@ -1,7 +1,6 @@
 package com.mju.ssoclient.infrastructure;
 
 import com.mju.ssoclient.domain.UserRepository;
-import com.mju.ssoclient.exception.AlreadyExistUser;
 import com.mju.ssoclient.exception.UserCreateFailException;
 import javax.ws.rs.core.Response;
 import lombok.extern.slf4j.Slf4j;
@@ -12,7 +11,6 @@ import org.keycloak.admin.client.resource.UsersResource;
 import org.keycloak.representations.idm.UserRepresentation;
 import org.mju.domain.UserEntity;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Repository;
 
 @Slf4j
@@ -20,9 +18,11 @@ import org.springframework.stereotype.Repository;
 class KeycloakUserRepository implements UserRepository {
     private final UsersResource usersResource;
     private final KeycloakUserRepresentationMapper keycloakUserRepresentationMapper;
+    private final KeycloakUserResponseValidator keycloakUserResponseValidator;
 
     private KeycloakUserRepository(
             final KeycloakUserRepresentationMapper keycloakUserRepresentationMapper,
+            final KeycloakUserResponseValidator keycloakUserResponseValidator,
             @Value("${keycloak.server.url}") final String keycloakServerUrl,
             @Value("${keycloak.realm}") final String realmName,
             @Value("${keycloak.client.id}") final String clientId,
@@ -30,6 +30,8 @@ class KeycloakUserRepository implements UserRepository {
             @Value("${keycloak.admin.password}") final String adminPassword
     ) {
         this.keycloakUserRepresentationMapper = keycloakUserRepresentationMapper;
+
+        this.keycloakUserResponseValidator = keycloakUserResponseValidator;
 
         Keycloak keycloak = KeycloakBuilder.builder()
                 .serverUrl(keycloakServerUrl)
@@ -52,7 +54,7 @@ class KeycloakUserRepository implements UserRepository {
         synchronized (usersResource) {
             Response userCreateResponse = usersResource.create(userRepresentation);
 
-            validationUserCreate(userCreateResponse);
+            keycloakUserResponseValidator.validationUserCreateResponse(userCreateResponse);
         }
 
         return usersResource.search(userRepresentation.getUsername()).stream()
@@ -60,14 +62,5 @@ class KeycloakUserRepository implements UserRepository {
                 .findAny()
                 .orElseThrow(UserCreateFailException::new)
                 .getId();
-    }
-
-    private void validationUserCreate(final Response response) {
-        if (response.getStatus() == HttpStatus.CONFLICT.value()) {
-            throw new AlreadyExistUser();
-        }
-        if (response.getStatus() != HttpStatus.CREATED.value()) {
-            throw new UserCreateFailException();
-        }
     }
 }
