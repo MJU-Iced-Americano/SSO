@@ -12,7 +12,7 @@ import org.springframework.stereotype.Component;
 
 @Component
 class KeycloakUserRepresentationMapper {
-    public UserRepresentation userRepresentationFrom(final UserEntity user) {
+    protected UserRepresentation userRepresentationFrom(final UserEntity user) {
         UserRepresentation userRepresentation = new UserRepresentation();
         userRepresentation.setEnabled(true);
         userRepresentation.setUsername(user.getUsername());
@@ -44,7 +44,7 @@ class KeycloakUserRepresentationMapper {
         return attributes;
     }
 
-    public String userIdByEqualUsernameFrom(final List<UserRepresentation> users, final String username) {
+    protected String userIdByEqualUsernameFrom(final List<UserRepresentation> users, final String username) {
         return users.stream()
                 .filter(u -> u.getUsername().equals(username))
                 .findAny()
