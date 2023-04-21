@@ -3,7 +3,7 @@ package com.mju.ssoclient.infrastructure;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 
-import com.mju.ssoclient.exception.AlreadyExistUser;
+import com.mju.ssoclient.exception.AlreadyExistUserException;
 import com.mju.ssoclient.exception.UserCreateFailException;
 import java.util.stream.Stream;
 import javax.ws.rs.core.Response;
@@ -40,7 +40,7 @@ class KeycloakUserResponseValidatorTest {
         assertThatThrownBy(
                 () -> keycloakUserResponseValidator
                         .validationUserCreateResponse(Response.status(Status.CONFLICT).build())
-        ).isInstanceOf(AlreadyExistUser.class);
+        ).isInstanceOf(AlreadyExistUserException.class);
     }
 
     @DisplayName("Response 응답 상태가 CONFLICT 이면 AlreadyExistsUserException 예외를 반환한다.")
