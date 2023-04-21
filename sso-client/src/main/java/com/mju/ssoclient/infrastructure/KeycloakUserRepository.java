@@ -52,10 +52,10 @@ class KeycloakUserRepository implements UserRepository {
 
         synchronized (usersResource) {
             Response userCreateResponse = usersResource.create(userRepresentation);
-
+            
             keycloakUserResponseValidator.validationUserCreateResponse(userCreateResponse);
         }
-
+        
         String createUserUsername = userRepresentation.getUsername();
         return keycloakUserRepresentationMapper
                 .userIdByEqualUsernameFrom(usersResource.search(createUserUsername), createUserUsername);
