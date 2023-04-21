@@ -32,20 +32,11 @@ class KeycloakUserRepresentationMapperTest {
     @Test
     void userRepresentationFrom() {
         // given
-        String username = "이름";
-        String email = "email@naver.com";
-        String password = "a12345678!";
-        String nickname = "닉네임";
-        String phoneNumber = "010-1234-5678";
-        String address = "주소";
-        Gender gender = Gender.MALE;
-        Birth birth = new Birth(LocalDate.now());
-
         UserEntity userEntity = new UserEntity(
-                username,
-                email,
-                password,
-                new AdditionalInformation(nickname, phoneNumber, address, gender, birth)
+                "이름",
+                "email@naver.com",
+                "a12345678!",
+                new AdditionalInformation("닉네임", "010-1234-5678", "주소", Gender.MALE, new Birth(LocalDate.now()))
         );
 
         // when
@@ -53,7 +44,7 @@ class KeycloakUserRepresentationMapperTest {
 
         // then
         Map<String, List<String>> userRepresentationAttributes = userRepresentation.getAttributes();
-
+        AdditionalInformation userEntityAdditionalInformation = userEntity.getAdditionalInformation();
         String actualPassword = userRepresentation.getCredentials()
                 .stream()
                 .filter(c -> c.getType().equals(CredentialRepresentation.PASSWORD))
@@ -62,14 +53,22 @@ class KeycloakUserRepresentationMapperTest {
                 .getValue();
 
         assertAll(
-                () -> assertThat(userRepresentation.getUsername()).isEqualTo(username),
-                () -> assertThat(userRepresentation.getEmail()).isEqualTo(email),
-                () -> assertThat(actualPassword).isEqualTo(password),
-                () -> assertThat(userRepresentationAttributes.get("nickname").get(0)).isEqualTo(nickname),
-                () -> assertThat(userRepresentationAttributes.get("phoneNumber").get(0)).isEqualTo(phoneNumber),
-                () -> assertThat(userRepresentationAttributes.get("address").get(0)).isEqualTo(address),
-                () -> assertThat(userRepresentationAttributes.get("gender").get(0)).isEqualTo(gender.toString()),
-                () -> assertThat(userRepresentationAttributes.get("birth").get(0)).isEqualTo(birth.toString())
+                () -> assertThat(userRepresentation.getUsername())
+                        .isEqualTo(userEntity.getUsername()),
+                () -> assertThat(userRepresentation.getEmail())
+                        .isEqualTo(userEntity.getEmail()),
+                () -> assertThat(actualPassword)
+                        .isEqualTo(userEntity.getPassword()),
+                () -> assertThat(userRepresentationAttributes.get("nickname").get(0))
+                        .isEqualTo(userEntityAdditionalInformation.getNickname()),
+                () -> assertThat(userRepresentationAttributes.get("phoneNumber").get(0))
+                        .isEqualTo(userEntityAdditionalInformation.getPhoneNumber()),
+                () -> assertThat(userRepresentationAttributes.get("address").get(0))
+                        .isEqualTo(userEntityAdditionalInformation.getAddress()),
+                () -> assertThat(userRepresentationAttributes.get("gender").get(0))
+                        .isEqualTo(userEntityAdditionalInformation.getGender().toString()),
+                () -> assertThat(userRepresentationAttributes.get("birth").get(0))
+                        .isEqualTo(userEntityAdditionalInformation.getBirth().toString())
         );
     }
 
