@@ -24,7 +24,7 @@ import org.springframework.stereotype.Repository;
 public class KeycloakUserRepository implements UserRepository {
     private final UsersResource usersResource;
 
-    public KeycloakUserRepository(
+    private KeycloakUserRepository(
             @Value("${keycloak.server.url}") String keycloakServerUrl,
             @Value("${keycloak.realm}") String realmName,
             @Value("${keycloak.client.id}") String clientId,
