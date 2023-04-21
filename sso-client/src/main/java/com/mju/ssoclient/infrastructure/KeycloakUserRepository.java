@@ -65,8 +65,6 @@ public class KeycloakUserRepository implements UserRepository {
         UserRepresentation userRepresentation = new UserRepresentation();
         userRepresentation.setEnabled(true);
         userRepresentation.setUsername(user.getUsername());
-        userRepresentation.setFirstName("");
-        userRepresentation.setLastName("");
         userRepresentation.setEmail(user.getEmail());
         userRepresentation.setAttributes(attributesFrom(user.getAdditionalInformation()));
         return userRepresentation;
