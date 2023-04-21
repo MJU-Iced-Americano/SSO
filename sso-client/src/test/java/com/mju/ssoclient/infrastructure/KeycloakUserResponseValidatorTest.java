@@ -43,7 +43,7 @@ class KeycloakUserResponseValidatorTest {
         ).isInstanceOf(AlreadyExistUserException.class);
     }
 
-    @DisplayName("Response 응답 상태가 CONFLICT 이면 AlreadyExistsUserException 예외를 반환한다.")
+    @DisplayName("Response 응답 상태가 CREATED와 CONFLICT가 아니면 UserCreateFailException 예외를 반환한다.")
     @MethodSource("provideValidationUserCreateResponseIsConflict")
     @ParameterizedTest(name = "status : {0}")
     void validationUserCreateResponseIsConflict(final HttpStatus status) {
