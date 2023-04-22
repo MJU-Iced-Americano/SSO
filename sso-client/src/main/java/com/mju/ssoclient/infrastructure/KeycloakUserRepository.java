@@ -50,12 +50,10 @@ class KeycloakUserRepository implements UserRepository {
 
         UserRepresentation userRepresentation = keycloakUserRepresentationMapper.userRepresentationFrom(user);
 
-        synchronized (usersResource) {
-            Response userCreateResponse = usersResource.create(userRepresentation);
-            
-            keycloakUserResponseValidator.validationUserCreateResponse(userCreateResponse);
-        }
-        
+        Response userCreateResponse = usersResource.create(userRepresentation);
+
+        keycloakUserResponseValidator.validationUserCreateResponse(userCreateResponse);
+
         String createUserUsername = userRepresentation.getUsername();
         return keycloakUserRepresentationMapper
                 .userIdByEqualUsernameFrom(usersResource.search(createUserUsername), createUserUsername);
