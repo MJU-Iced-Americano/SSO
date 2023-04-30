@@ -49,6 +49,15 @@ dependencies {
     // test
     testImplementation 'io.rest-assured:rest-assured:4.5.1'
     testImplementation "org.testcontainers:junit-jupiter:1.18.0"
+
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+
+
+    implementation 'org.springframework.boot:spring-boot-starter-oauth2-resource-server'
+    implementation 'org.springframework.boot:spring-boot-starter-oauth2-client'
+    implementation 'org.springframework.boot:spring-boot-starter-security'
+    implementation 'org.keycloak.bom:keycloak-adapter-bom:21.0.1'
+    implementation 'org.keycloak:examples-admin-client:18.0.2'
 }
 
 test {
