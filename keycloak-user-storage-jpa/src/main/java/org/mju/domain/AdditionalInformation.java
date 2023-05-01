@@ -19,6 +19,8 @@ public class AdditionalInformation {
     @Embedded
     private Birth birth = new Birth();
 
+    private String profileImageUrl;
+
     protected AdditionalInformation() {
 
     }
@@ -28,13 +30,15 @@ public class AdditionalInformation {
             final String phoneNumber,
             final String address,
             final Gender gender,
-            final Birth birth
+            final Birth birth,
+            final String profileImageUrl
     ) {
         this.nickname = nickname;
         this.phoneNumber = phoneNumber;
         this.address = address;
         this.gender = gender;
         this.birth = birth;
+        this.profileImageUrl = profileImageUrl;
     }
 
     public String getNickname() {
@@ -55,5 +59,9 @@ public class AdditionalInformation {
 
     public Birth getBirth() {
         return birth;
+    }
+
+    public String getProfileImageUrl() {
+        return profileImageUrl;
     }
 }
