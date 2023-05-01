@@ -18,4 +18,5 @@ public class UserJoinRequest {
     private String address;
     private String gender;
     private LocalDate birth;
+    private String profileImageUrl;
 }

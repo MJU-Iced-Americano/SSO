@@ -36,7 +36,8 @@ public class UserAcceptanceTest extends AcceptanceTest {
                     "010-0000-0000",
                     "서울특별시 서대문구",
                     "MALE",
-                    "2000-01-01"
+                    "2000-01-01",
+                    "https://t1.daumcdn.net/friends/prod/editor/dc8b3d02-a15a-4afa-a88b-989cf2a50476.jpg"
             );
 
             // then
@@ -53,8 +54,8 @@ public class UserAcceptanceTest extends AcceptanceTest {
             // given
             String email = "test@naver.com";
 
-            회원가입_요청(email, "ABC12345678!", "test", "nick", "010-0000-0000", "서울특별시 서대문구", "MALE", "2000-01-01");
-
+            회원가입_요청(email, "ABC12345678!", "test", "nick", "010-0000-0000", "서울특별시 서대문구", "MALE", "2000-01-01",
+                    "https://t1.daumcdn.net/friends/prod/editor/dc8b3d02-a15a-4afa-a88b-989cf2a50476.jpg");
             // when
             var response = 회원가입_요청(
                     email,
@@ -64,7 +65,8 @@ public class UserAcceptanceTest extends AcceptanceTest {
                     "010-1234-5678",
                     "서울특별시 마포구",
                     "MALE",
-                    "2001-01-01"
+                    "2001-01-01",
+                    "https://t1.daumcdn.net/friends/prod/editor/dc8b3d02-a15a-4afa-a88b-989cf2a50476.jpg"
             );
 
             // then

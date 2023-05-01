@@ -9,13 +9,14 @@ import org.springframework.stereotype.Component;
 
 @Component
 class UserMapper {
-    public UserEntity userFrom(UserJoinRequest userJoinRequest) {
+    public UserEntity userFrom(final UserJoinRequest userJoinRequest) {
         AdditionalInformation additionalInformation = new AdditionalInformation(
                 userJoinRequest.getNickname(),
                 userJoinRequest.getPhoneNumber(),
                 userJoinRequest.getAddress(),
                 Gender.valueOf(userJoinRequest.getGender()),
-                new Birth(userJoinRequest.getBirth())
+                new Birth(userJoinRequest.getBirth()),
+                userJoinRequest.getProfileImageUrl()
         );
 
         return new UserEntity(

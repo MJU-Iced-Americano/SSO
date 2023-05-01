@@ -36,7 +36,8 @@ class KeycloakUserRepresentationMapperTest {
                 "이름",
                 "email@naver.com",
                 "a12345678!",
-                new AdditionalInformation("닉네임", "010-1234-5678", "주소", Gender.MALE, new Birth(LocalDate.now()))
+                new AdditionalInformation("닉네임", "010-1234-5678", "주소", Gender.MALE, new Birth(LocalDate.now()),
+                        "https://www.google.com/search?q=%EC%9D%B4%EB%AF%B8%EC%A7%80&rlz=1C5CHFA_enKR1023KR1023&sxsrf=APwXEdeoS5NHNytMzZfiSi2uDQ2Io0_dOg:1682939446544&tbm=isch&source=iu&ictx=1&vet=1&fir=1VQz4qfBZ3knDM%252CyqSrMQ_lLcRCtM%252C%252Fm%252F0dj30p&usg=AI4_-kR4UZhMYOOcHfG_ozWOE8Eju1_KJw&sa=X&ved=2ahUKEwjK1I7__dP-AhU9h1YBHYuQAmEQ_B16BAhFEAI#imgrc=1VQz4qfBZ3knDM")
         );
 
         // when
@@ -68,7 +69,9 @@ class KeycloakUserRepresentationMapperTest {
                 () -> assertThat(userRepresentationAttributes.get("gender").get(0))
                         .isEqualTo(userEntityAdditionalInformation.getGender().toString()),
                 () -> assertThat(userRepresentationAttributes.get("birth").get(0))
-                        .isEqualTo(userEntityAdditionalInformation.getBirth().toString())
+                        .isEqualTo(userEntityAdditionalInformation.getBirth().toString()),
+                () -> assertThat(userRepresentationAttributes.get("profileImageUrl").get(0))
+                        .isEqualTo(userEntityAdditionalInformation.getProfileImageUrl())
         );
     }
 
