@@ -1,5 +1,6 @@
 package org.mju.domain;
 
+import javax.persistence.Column;
 import javax.persistence.Embeddable;
 import javax.persistence.Embedded;
 import javax.persistence.EnumType;
@@ -19,6 +20,7 @@ public class AdditionalInformation {
     @Embedded
     private Birth birth = new Birth();
 
+    @Column(columnDefinition = "TEXT")
     private String profileImageUrl;
 
     protected AdditionalInformation() {
