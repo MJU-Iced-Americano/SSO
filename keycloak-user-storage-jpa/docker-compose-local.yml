@@ -35,7 +35,7 @@ services:
         condition: service_healthy
     volumes:
       - ./build/libs/keycloak-user-storage-jpa.jar:/opt/keycloak/providers/keycloak-user-storage-jpa.jar
-      - ./conf/quarkus.properties:/opt/keycloak/conf/quarkus.properties
+      - ./conf/quarkus-local.properties:/opt/keycloak/conf/quarkus.properties
       - ./ObjectStore/:/ObjectStore/
     ports:
       - "8080:8080"
