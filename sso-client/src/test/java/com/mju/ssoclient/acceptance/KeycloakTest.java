@@ -31,7 +31,7 @@ public class KeycloakTest {
 
     static {
         KEYCLOAK_DOCKER_COMPOSE_FILE_PATH = Paths
-                .get(System.getProperty("user.dir"), "..", "keycloak-user-storage-jpa", "docker-compose.yml")
+                .get(System.getProperty("user.dir"), "..", "keycloak-user-storage-jpa", "docker-compose-local.yml")
                 .normalize()
                 .toString();
 
