@@ -25,16 +25,20 @@ ext {
 
 dependencies {
     // spring
-//    implementation 'org.springframework.boot:spring-boot-starter-oauth2-client'
-//    implementation 'org.springframework.boot:spring-boot-starter-security'
+    implementation 'org.springframework.boot:spring-boot-starter-security:2.7.10'
     implementation 'org.springframework.boot:spring-boot-starter-web'
     implementation 'org.springframework.boot:spring-boot-starter-validation'
+    implementation 'org.springframework.security:spring-security-web:5.7.7'
+
+    implementation 'org.keycloak:keycloak-spring-security-adapter:21.0.1'
+
 
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
 //    testImplementation 'org.springframework.security:spring-security-test'
 
     // keycloak
     implementation 'org.keycloak:keycloak-admin-client:21.0.2'
+    implementation 'org.springframework.boot:spring-boot-starter-oauth2-client:2.7.10'
 
     // keycloak-user-storage-jpa module
     implementation project(':keycloak-user-storage-jpa')
@@ -50,6 +54,7 @@ dependencies {
     testImplementation 'io.rest-assured:rest-assured:4.5.1'
     testImplementation "org.testcontainers:junit-jupiter:1.18.0"
 }
+
 
 test {
     useJUnitPlatform()

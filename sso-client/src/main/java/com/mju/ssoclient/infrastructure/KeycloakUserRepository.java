@@ -22,11 +22,11 @@ class KeycloakUserRepository implements UserRepository {
     private KeycloakUserRepository(
             final KeycloakUserRepresentationMapper keycloakUserRepresentationMapper,
             final KeycloakUserResponseValidator keycloakUserResponseValidator,
-            @Value("${keycloak.server.url}") final String keycloakServerUrl,
+            @Value("${keycloak.auth-server-url}") final String keycloakServerUrl,
             @Value("${keycloak.realm}") final String realmName,
-            @Value("${keycloak.client.id}") final String clientId,
-            @Value("${keycloak.admin.name}") final String adminUserName,
-            @Value("${keycloak.admin.password}") final String adminPassword
+            @Value("${mykeycloak.client.id}") final String clientId,
+            @Value("${mykeycloak.admin.name}") final String adminUserName,
+            @Value("${mykeycloak.admin.password}") final String adminPassword
     ) {
         this.keycloakUserRepresentationMapper = keycloakUserRepresentationMapper;
 
