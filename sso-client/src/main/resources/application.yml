@@ -65,9 +65,9 @@ keycloak:
 #    url: http://localhost:8080
   auth-server-url: http://localhost:8080/auth
   ssl-required: external
-  resource: #클라이언트 id
+  resource: admin-client
   credentials:
-    secret: #클라이언트 시크릿
+    secret: admin-secret
   use-resource-role-mappings: true
   bearer-only: true
 
