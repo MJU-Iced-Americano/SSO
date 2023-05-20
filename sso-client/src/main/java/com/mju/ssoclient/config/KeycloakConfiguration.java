@@ -30,6 +30,14 @@ public class KeycloakConfiguration implements InitializingBean {
     private String adminClientId;
     @Value("${keycloak.credentials.secret}")
     private String adminClientSecret;
+    @Value("${spring.security.oauth2.client.registration.github.client-id}")
+    private String githubClient;
+    @Value("${spring.security.oauth2.client.registration.github.client-secret}")
+    private String githubSecret;
+    @Value("${spring.security.oauth2.client.registration.google.client-id}")
+    private String googleClient;
+    @Value("${spring.security.oauth2.client.registration.google.client-secret}")
+    private String googleSecret;
 
     @Override
     public void afterPropertiesSet() {
@@ -48,8 +56,8 @@ public class KeycloakConfiguration implements InitializingBean {
 
         RealmResource realm = keycloak.realm(realmName);
         IdentityProvidersResource identityProvidersResource = realm.identityProviders();
-        identityProvidersResource.create(createIdentityProvider("google"));
-        identityProvidersResource.create(createIdentityProvider("github"));
+        identityProvidersResource.create(createIdentityProvider("github", githubClient, githubSecret));
+        identityProvidersResource.create(createIdentityProvider("google", googleClient, googleSecret));
     }
 
     private Boolean isAlreadyCreateAdminClient(final Keycloak keycloak) {
@@ -80,14 +88,18 @@ public class KeycloakConfiguration implements InitializingBean {
         }
     }
 
-    private IdentityProviderRepresentation createIdentityProvider(String alias) {
+    private IdentityProviderRepresentation createIdentityProvider(
+            final String alias,
+            final String clientId,
+            final String clientSecret
+    ) {
         IdentityProviderRepresentation identityProviderRepresentation = new IdentityProviderRepresentation();
         identityProviderRepresentation.setAlias(alias);
         identityProviderRepresentation.setProviderId(alias);
         identityProviderRepresentation.setEnabled(true);
         Map<String, String> config = new HashMap<>();
-        config.put("clientId", adminClientId);
-        config.put("clientSecret", adminClientSecret);
+        config.put("clientId", clientId);
+        config.put("clientSecret", clientSecret);
         identityProviderRepresentation.setConfig(config);
         return identityProviderRepresentation;
     }
