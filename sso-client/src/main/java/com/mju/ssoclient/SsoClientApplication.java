@@ -1,7 +1,6 @@
 package com.mju.ssoclient;
 
 import org.keycloak.adapters.KeycloakConfigResolver;
-import org.keycloak.adapters.springboot.KeycloakSpringBootConfigResolver;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
@@ -13,9 +12,9 @@ class SsoClientApplication {
 		SpringApplication.run(SsoClientApplication.class, args);
 	}
 
-	@Bean
-	public KeycloakConfigResolver keycloakConfigResolver() {
-		return new KeycloakSpringBootConfigResolver();
-	}
+//	@Bean
+//	public KeycloakConfigResolver keycloakConfigResolver() {
+//		return new KeycloakSpringBootConfigResolver();
+//	}
 
 }

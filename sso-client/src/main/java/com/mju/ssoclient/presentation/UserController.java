@@ -36,7 +36,7 @@ class UserController {
 
     @GetMapping("/login")
     public String login(Principal principal, HttpServletRequest request) {
-        return "redirect:http://localhost:8080/realms/master/protocol/openid-connect/auth?response_type=code&client_id=SSOService&redirect_uri=http://localhost:80/auth&scope=openid&nonce=asb3";
+        return "redirect:http://localhost:8080/realms/master/protocol/openid-connect/auth?response_type=code&client_id=admin-client&redirect_uri=http://localhost:80/auth&scope=openid&nonce=asb3";
 
     }
 }
