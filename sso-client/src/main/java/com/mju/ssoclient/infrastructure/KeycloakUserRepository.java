@@ -33,7 +33,7 @@ class KeycloakUserRepository implements UserRepository {
         this.keycloakUserResponseValidator = keycloakUserResponseValidator;
 
         Keycloak keycloak = KeycloakBuilder.builder()
-                .serverUrl(keycloakServerUrl)
+                .serverUrl("http://localhost:8080")
                 .grantType(OAuth2Constants.PASSWORD)
                 .realm(realmName)
                 .clientId(clientId)
