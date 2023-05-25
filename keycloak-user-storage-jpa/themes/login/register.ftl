@@ -3,6 +3,36 @@
     <#if section = "header">
         ${msg("registerTitle")}
     <#elseif section = "form">
+        <script>
+            document.addEventListener("DOMContentLoaded", function() {
+                // 폼 제출 이벤트 핸들러
+                document.getElementById("kc-register-form").addEventListener("submit", function(event) {
+                    // 폼의 기본 동작(페이지 새로고침)을 막음
+                    event.preventDefault();
+
+                    // 폼 데이터를 JSON 형식으로 변환
+                    var formData = {
+                        email: document.querySelector("input[name='email']").value
+                    };
+
+                    // 서버로 데이터 전송
+                    fetch("http://localhost:80/user/join", {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json"
+                        },
+                        body: JSON.stringify(formData)
+                    })
+                        .then(response => response.json())
+                        .then(data => {
+                            console.log(data);
+                        })
+                        .catch(error => {
+                            console.log(error);
+                        });
+                });
+            });
+        </script>
         <form id="kc-register-form" class="${properties.kcFormClass!}" action="http://localhost:80/user/join" method="post">
 
             <div class="${properties.kcFormGroupClass!} ${messagesPerField.printIfExists('email',properties.kcFormGroupErrorClass!)}">

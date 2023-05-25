@@ -37,7 +37,7 @@ services:
       - ./build/libs/keycloak-user-storage-jpa.jar:/opt/keycloak/providers/keycloak-user-storage-jpa.jar
       - ./conf/quarkus-local.properties:/opt/keycloak/conf/quarkus.properties
       - ./ObjectStore/:/ObjectStore/
-      - ./login-theme:/opt/keycloak/themes/custom/
+      - ./themes:/opt/keycloak/themes/custom/
     ports:
       - "8080:8080"
     deploy:
