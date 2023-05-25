@@ -3,7 +3,7 @@ services:
   keycloak:
     image: quay.io/keycloak/keycloak:21.0.2
     platform: linux/arm64
-    entrypoint: /opt/keycloak/bin/kc.sh start-dev start --spi-theme-static-max-age=-1 --spi-theme-cache-themes=false --spi-theme-cache-templates=false
+    entrypoint: /opt/keycloak/bin/kc.sh start-dev
     environment:
       DB_VENDOR: MYSQL
       DB_ADDR: mysql
@@ -13,8 +13,8 @@ services:
       KEYCLOAK_ADMIN: admin
       KEYCLOAK_ADMIN_PASSWORD: 1234
     volumes:
-      - ./build/libs/keycloak-user-storage-jpa.jar:/opt/keycloak/providers/keycloak-user-storage-jpa.jar
-      - ./conf/quarkus-local.properties:/opt/keycloak/conf/quarkus.properties
+      - ./build/libs/keycloak-user-storage-jpa.jar:/opt/keycloak/lib/providers/keycloak-user-storage-jpa.jar
+      - ./conf/quarkus-prod.properties:/opt/keycloak/conf/quarkus.properties
       - ./ObjectStore/:/ObjectStore/
       - ./themes:/opt/keycloak/themes/custom/
     ports:
@@ -24,4 +24,3 @@ services:
         condition: on-failure
         delay: 20s
         max_attempts: 3
-
