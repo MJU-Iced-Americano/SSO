@@ -1,52 +1,155 @@
 <#import "template.ftl" as layout>
-<@layout.registrationLayout displayInfo=social.displayInfo; section>
-    <#if section = "title">
-        커스텀 회원 가입 타이틀
-    <#elseif section = "header">
-        <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
-    <#elseif section = "message">
-    <#--  type종류: success, warning, error, info  -->
-        <div class="alert alert-${message.type}">
-            <span class="message-text">${message.summary?no_esc}</span>
-        </div>
-    <#elseif section = "app-head">
-        <div class="app-name-wrapper">
-            <img src="https://go.dev/images/gophers/motorcycle.svg"/>
-            <h1 class="app-name">회원 가입</h1>
-        </div>
+<@layout.registrationLayout; section>
+    <#if section = "header">
+        ${msg("registerTitle")}
     <#elseif section = "form">
-        <#if realm.password>
-            <div class="app-form-wrapper">
-                <form id="kc-form-login" class="app-form" onsubmit="return false;" action="http://localhost/user/" method="post">
-                    <label>
-                        <div>이메일 또는 아이디</div>
-                        <input id="username" class="login-field" type="text" name="username">
-                    </label>
+        <form id="kc-register-form" class="${properties.kcFormClass!}" action="http://localhost:80/user/join" method="post">
 
-                    <label>
-                        <div>비밀번호</div>
-                        <input id="password" class="login-field" type="password" name="password">
-                    </label>
+            <div class="${properties.kcFormGroupClass!} ${messagesPerField.printIfExists('email',properties.kcFormGroupErrorClass!)}">
 
-                    <label>
-                        <div>비밀번호 확인</div>
-                        <input id="password-confirm" class="login-field" type="password" name="password-confirm"
-                               autocomplete="new-password" required>
+                <div class="mdc-text-field mdc-text-field--with-leading-icon ${properties.kcLabelClass!}">
+                    <i class="material-icons mdc-text-field__icon" role="button">email</i>
+                    <input tabindex="0" required id="email" class="mdc-text-field__input ${properties.kcInputClass!}" name="email" value="${(register.formData.email!'')}" type="email" autofocus autocomplete="off">
+                    <div class="mdc-line-ripple"></div>
+                    <label for="email" class="mdc-floating-label ${properties.kcLabelClass!}">
+                        ${msg("email")}
                     </label>
+                </div>
 
-                    <label>
-                        <div>이메일</div>
-                        <input id="email" class="login-field" type="email" name="email">
-                    </label>
-
-                    <label>
-                        <div>닉네임</div>
-                        <input id="nickname" class="login-field" type="nickname" name="nickname">
-                    </label>
-
-                    <button class="submit" type="submit">회원 가입</button>
-                </form>
             </div>
-        </#if>
+
+            <#if !realm.registrationEmailAsUsername>
+                <div class="${properties.kcFormGroupClass!} ${messagesPerField.printIfExists('username',properties.kcFormGroupErrorClass!)}">
+
+                    <div class="mdc-text-field mdc-text-field--with-leading-icon ${properties.kcLabelClass!}">
+                        <i class="material-icons mdc-text-field__icon" role="button">account_box</i>
+                        <input tabindex="0" required id="username" class="mdc-text-field__input ${properties.kcInputClass!}" name="username" value="${(register.formData.username!'')}" type="text" autofocus autocomplete="off">
+                        <div class="mdc-line-ripple"></div>
+                        <label for="username" class="mdc-floating-label ${properties.kcLabelClass!}">
+                            ${msg("username")}
+                        </label>
+                    </div>
+
+                </div>
+            </#if>
+
+            <#if passwordRequired??>
+                <div class="${properties.kcFormGroupClass!} ${messagesPerField.printIfExists('password',properties.kcFormGroupErrorClass!)}">
+
+                    <div class="mdc-text-field mdc-text-field--with-leading-icon ${properties.kcLabelClass!}">
+                        <i class="material-icons mdc-text-field__icon" role="button">lock</i>
+                        <input tabindex="0" required id="password" class="mdc-text-field__input ${properties.kcInputClass!}" name="password" type="password" autocomplete="off">
+                        <div class="mdc-line-ripple"></div>
+                        <label for="password" class="mdc-floating-label ${properties.kcLabelClass!}">${msg("password")}</label>
+                    </div>
+
+                </div>
+
+                <div class="${properties.kcFormGroupClass!} ${messagesPerField.printIfExists('password-confirm',properties.kcFormGroupErrorClass!)}">
+
+                    <div class="mdc-text-field mdc-text-field--with-leading-icon ${properties.kcLabelClass!}">
+                        <i class="material-icons mdc-text-field__icon" role="button">lock</i>
+                        <input tabindex="0" required id="password-confirm" class="mdc-text-field__input ${properties.kcInputClass!}" name="password-confirm" type="password" autocomplete="off">
+                        <div class="mdc-line-ripple"></div>
+                        <label for="password-confirm" class="mdc-floating-label ${properties.kcLabelClass!}">${msg("passwordConfirm")}</label>
+                    </div>
+
+                </div>
+            </#if>
+
+            <div class="${properties.kcFormGroupClass!} ${messagesPerField.printIfExists('nickname',properties.kcFormGroupErrorClass!)}">
+
+                <div class="mdc-text-field mdc-text-field--with-leading-icon ${properties.kcLabelClass!}">
+                    <i class="material-icons mdc-text-field__icon" role="button">nickname</i>
+                    <input tabindex="0" required id="nickname" class="mdc-text-field__input ${properties.kcInputClass!}" name="nickname" value="${(register.formData.nickname!'')}" type="text" autofocus autocomplete="off">
+                    <div class="mdc-line-ripple"></div>
+                    <label for="nickname" class="mdc-floating-label ${properties.kcLabelClass!}">
+                        ${msg("nickname")}
+                    </label>
+                </div>
+
+            </div>
+
+            <div class="${properties.kcFormGroupClass!} ${messagesPerField.printIfExists('phoneNumber',properties.kcFormGroupErrorClass!)}">
+
+                <div class="mdc-text-field mdc-text-field--with-leading-icon ${properties.kcLabelClass!}">
+                    <i class="material-icons mdc-text-field__icon" role="button">phone</i>
+                    <input tabindex="0" required id="phoneNumber" class="mdc-text-field__input ${properties.kcInputClass!}" name="phoneNumber" pattern="[0-9]{3}-[0-9]{4}-[0-9]{4}" value="${(register.formData.phoneNumber!'')}" type="text" autofocus autocomplete="off">
+                    <div class="mdc-line-ripple"></div>
+                    <label for="phoneNumber" class="mdc-floating-label ${properties.kcLabelClass!}">
+                        ${msg("phoneNumber")}
+                    </label>
+                </div>
+
+            </div>
+
+            <div class="${properties.kcFormGroupClass!} ${messagesPerField.printIfExists('address',properties.kcFormGroupErrorClass!)}">
+
+                 <div class="mdc-text-field mdc-text-field--with-leading-icon ${properties.kcLabelClass!}">
+                     <i class="material-icons mdc-text-field__icon" role="button">address</i>
+                     <input tabindex="0" required id="phoneNumber" class="mdc-text-field__input ${properties.kcInputClass!}" name="address" value="${(register.formData.address!'')}" type="text" autofocus autocomplete="off">
+                     <div class="mdc-line-ripple"></div>
+                     <label for="address" class="mdc-floating-label ${properties.kcLabelClass!}">
+                         ${msg("address")}
+                     </label>
+                 </div>
+
+            </div>
+
+            <div class="${properties.kcFormGroupClass!} ${messagesPerField.printIfExists('gender',properties.kcFormGroupErrorClass!)}">
+
+                <div class="mdc-text-field mdc-text-field--with-leading-icon ${properties.kcLabelClass!}">
+                    <i class="material-icons mdc-text-field__icon" role="button">person</i>
+                    <select tabindex="0" required id="gender" class="mdc-select ${properties.kcInputClass!}" name="gender">
+                        <option value="" <#if (register.formData.gender!'') == ''>selected</#if>></option>
+                        <option value="male" <#if (register.formData.gender!'') == 'male'>selected</#if>>Male</option>
+                        <option value="female" <#if (register.formData.gender!'') == 'female'>selected</#if>>Female</option>
+                    </select>
+                    <div class="mdc-line-ripple"></div>
+                    <label for="gender" class="mdc-floating-label ${properties.kcLabelClass!}">
+                        ${msg("gender")}
+                    </label>
+                </div>
+
+            </div>
+
+            <div class="${properties.kcFormGroupClass!} ${messagesPerField.printIfExists('birth',properties.kcFormGroupErrorClass!)}">
+
+                <div class="mdc-text-field mdc-text-field--with-leading-icon ${properties.kcLabelClass!}">
+                    <i class="material-icons mdc-text-field__icon" role="button">birth</i>
+                    <input tabindex="0" required id="birth" class="mdc-text-field__input ${properties.kcInputClass!}" name="birth" value="${(register.formData.birth!'')}" type="date" autofocus autocomplete="off">
+                    <div class="mdc-line-ripple"></div>
+                    <label for="birth" class="mdc-floating-label ${properties.kcLabelClass!}">
+                        ${msg("birth")}
+                    </label>
+                </div>
+
+            </div>
+
+
+            <#if recaptchaRequired??>
+                <div class="form-group">
+                    <div class="${properties.kcInputWrapperClass!}">
+                        <div class="g-recaptcha" data-size="compact" data-sitekey="${recaptchaSiteKey}"></div>
+                    </div>
+                </div>
+            </#if>
+
+            <div class="mdc-card__actions">
+
+                <a href="${url.loginUrl}" class="mdc-button mdc-card__action mdc-card__action--button">
+                    <i class="material-icons mdc-button__icon">arrow_back</i>
+                    ${kcSanitize(msg("backToLogin"))?no_esc}
+                </a>
+
+                <div class="mdc-card__action-icons">
+                    <div class="mdc-card__action-buttons">
+                        <button tabindex="0" name="login" id="kc-login" type="submit" class="mdc-button mdc-button--raised mdc-card__action">
+                            ${msg("doRegister")}
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </form>
     </#if>
 </@layout.registrationLayout>
