@@ -1,58 +1,96 @@
 <#import "template.ftl" as layout>
-<@layout.registrationLayout; section>
+<@layout.registrationLayout displayInfo=social.displayInfo; section>
     <#if section = "title">
-        ${msg("loginProfileTitle")?no_esc}
+        커스텀 회원 정보 추가 타이틀
     <#elseif section = "header">
-        ${msg("loginProfileTitle")?no_esc}
+        <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
+    <#elseif section = "message">
+    <#--  type종류: success, warning, error, info  -->
+        <div class="alert alert-${message.type}">
+            <span class="message-text">${message.summary?no_esc}</span>
+        </div>
+    <#elseif section = "app-head">
+        <div class="app-name-wrapper">
+            <img src="https://go.dev/images/gophers/motorcycle.svg"/>
+            <h1 class="app-name">회원 정보 추가</h1>
+        </div>
     <#elseif section = "form">
-        <form id="kc-update-profile-form" class="form update-profile ${properties.kcFormClass!}" action="${url.loginAction}" method="post">
-            <#if user.editUsernameAllowed>
-                <div class="update-profile-field ${properties.kcFormGroupClass!} ${messagesPerField.printIfExists('username',properties.kcFormGroupErrorClass!)}">
-                    <div class="${properties.kcLabelWrapperClass!}">
-                        <label for="username" class="${properties.kcLabelClass!}">${msg("username")}</label>
+        <#if realm.password>
+            <div class="app-form-wrapper">
+                <form id="kc-form-login" class="app-form" action="${url.loginAction}" method="post">
+                    <div>
+                        <div>
+                            <label for="user.attributes.phoneNumber">전화 번호</label>
+                        </div>
+                        <div>
+                            <input type="tel" class="form-control" id="user.attributes.phoneNumber" name="user.attributes.phoneNumber" value="${(user.attributes.phoneNumber!'')}" />
+                        </div>
                     </div>
-                    <div class="${properties.kcInputWrapperClass!}">
-                        <input type="text" id="username" name="username" value="${(user.username!'')}" class="form-control ${properties.kcInputClass!}"/>
+
+                    <div>
+                        <div>
+                            <label for="user.attributes.nickname">닉네임</label>
+                        </div>
+                        <div>
+                            <input type="text"  id="user.attributes.nickname" name="user.attributes.nickname" value="${(user.attributes.nickname!'')}" />
+                        </div>
                     </div>
-                </div>
-            </#if>
-            <div class="update-profile-field ${properties.kcFormGroupClass!} ${messagesPerField.printIfExists('email',properties.kcFormGroupErrorClass!)}">
-                <div class="${properties.kcLabelWrapperClass!}">
-                    <label for="email" class="${properties.kcLabelClass!}">${msg("email")}</label>
-                </div>
-                <div class="${properties.kcInputWrapperClass!}">
-                    <input type="text" id="email" name="email" value="${(user.email!'')}" class="form-control ${properties.kcInputClass!}" />
-                </div>
-            </div>
 
-            <div class="update-profile-field ${properties.kcFormGroupClass!} ${messagesPerField.printIfExists('firstName',properties.kcFormGroupErrorClass!)}">
-                <div class="${properties.kcLabelWrapperClass!}">
-                    <label for="firstName" class="${properties.kcLabelClass!}">${msg("firstName")}</label>
-                </div>
-                <div class="${properties.kcInputWrapperClass!}">
-                    <input type="text" id="firstName" name="firstName" value="${(user.firstName!'')}" class="form-control ${properties.kcInputClass!}" />
-                </div>
-            </div>
-
-            <div class="update-profile-field ${properties.kcFormGroupClass!} ${messagesPerField.printIfExists('lastName',properties.kcFormGroupErrorClass!)}">
-                <div class="${properties.kcLabelWrapperClass!}">
-                    <label for="lastName" class="${properties.kcLabelClass!}">${msg("lastName")}</label>
-                </div>
-                <div class="${properties.kcInputWrapperClass!}">
-                    <input type="text" id="lastName" name="lastName" value="${(user.lastName!'')}" class="form-control ${properties.kcInputClass!}" />
-                </div>
-            </div>
-
-            <div class="${properties.kcFormGroupClass!} row update-profile-button-container">
-                <div id="kc-form-options" class="${properties.kcFormOptionsClass!}">
-                    <div class="${properties.kcFormOptionsWrapperClass!}">
+                    <div>
+                        <div>
+                            <label for="user.attributes.firstName">성</label>
+                        </div>
+                        <div>
+                            <input type="text"  id="user.attributes.firstName" name="user.attributes.firstName" value="${(user.attributes.firstName!'')}" />
+                        </div>
                     </div>
-                </div>
 
-                <div id="kc-form-buttons" class="${properties.kcFormButtonsClass!} col-xs-6 xs-xs-offset-6 col-sm-4 col-sm-offset-8">
-                    <input class="btn btn-primary btn-flat btn-block ${properties.kcButtonClass!} ${properties.kcButtonPrimaryClass!} ${properties.kcButtonLargeClass!}" type="submit" value="${msg("doSubmit")}" />
-                </div>
+                    <div>
+                        <div>
+                            <label for="user.attributes.lastName">이름</label>
+                        </div>
+                        <div>
+                            <input type="text"  id="user.attributes.lastName" name="user.attributes.lastName" value="${(user.attributes.lastName!'')}" />
+                        </div>
+                    </div>
+
+                    <div>
+                        <div>
+                            <label for="user.attributes.email">이메일</label>
+                        </div>
+                        <div>
+                            <input type="email"  id="user.attributes.email" name="user.attributes.email" value="${(user.attributes.email!'')}" />
+                        </div>
+                    </div>
+
+                    <div>
+                        <div>
+                            <label for="user.attributes.lastName">주소</label>
+                        </div>
+                        <div>
+                            <input type="address"  id="user.attributes.address" name="user.attributes.address" value="${(user.attributes.address!'')}" />
+                        </div>
+                    </div>
+
+                    <div class="login-field">
+                        <label for="user.attributes.gender" class="login-field"> 성별 </label>
+                    </div>
+                    <div class="login-field">
+                        <select id="user.attributes.gender" name="user.attributes.gender" class="login-field">
+                            <option value="MALE">남성</option>
+                            <option value="FEMALE">여성</option>
+                        </select>
+                    </div>
+                    <div class="login-field">
+                        <label for="user.attributes.birth" class="login-field"> 생년월일 </label>
+                    </div>
+                    <div class="login-field">
+                        <input type="date" id="user.attributes.birth" class="login-field" name="user.attributes.birth"/>
+                    </div>
+
+                    <button class="submit" type="submit">등록 버튼</button>
+                </form>
             </div>
-        </form>
+        </#if>
     </#if>
 </@layout.registrationLayout>
