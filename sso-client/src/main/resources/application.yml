@@ -27,7 +27,7 @@ spring:
             scope:
               - email
               - profile
-            redirect-uri : "http://localhost:8080/realms/master/broker/google/endpoint"
+            redirect-uri: "http://localhost:8080/realms/master/broker/google/endpoint"
             client-name: Google
             provider: google
           keycloak:
@@ -41,8 +41,6 @@ spring:
             client-id: f56af0d721fc89b30f61
             client-secret: fec0e05d0dde826b03b736da44e3a6415c3f5f10
             authorization-grant-type: authorization_code
-            # Identity providers에 기본으로 주어진 redirect_url 써야 함
-            # GitHub, Google에서 Oauth 설정할 때도 Identity providers에 기본으로 주어진 redirect_url로 설정 해줘야 함
             redirect-uri: "http://localhost:8080/realms/master/broker/github/endpoint"
             client-name: GitHub
             provider: github
@@ -56,13 +54,8 @@ jwt:
 
 keycloak:
   realm: master
-#  client:
-#    id: admin-cli
-#  admin:
-#    name: admin
-#    password: 1234
-#  server:
-#    url: http://localhost:8080
+  client-url: http://localhost
+  server-url: http://localhost:8080
   auth-server-url: http://localhost:8080/auth
   ssl-required: external
   resource: admin-client

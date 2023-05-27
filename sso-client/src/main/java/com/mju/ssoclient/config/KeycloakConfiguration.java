@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import javax.ws.rs.core.Response;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.http.HttpStatus;
 import org.keycloak.OAuth2Constants;
 import org.keycloak.admin.client.Keycloak;
@@ -16,6 +17,7 @@ import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 
+@Slf4j
 @Configuration
 public class KeycloakConfiguration implements InitializingBean {
     @Value("${keycloak.realm}")
@@ -36,13 +38,23 @@ public class KeycloakConfiguration implements InitializingBean {
     private String githubSecret;
     @Value("${spring.security.oauth2.client.registration.google.client-id}")
     private String googleClient;
+    @Value("${spring.security.oauth2.client.registration.github.redirect-uri}")
+    private String githubRedirectURI;
     @Value("${spring.security.oauth2.client.registration.google.client-secret}")
     private String googleSecret;
+    @Value("${spring.security.oauth2.client.registration.google.redirect-uri}")
+    private String googleRedirectURI;
+    @Value("${keycloak.server-url}")
+    private String keycloakServerURL;
+    @Value("${keycloak.auth-server-url}")
+    private String keycloakAuthServerURL;
+    @Value("${keycloak.auth-server-url}")
+    private String clientServerURL;
 
     @Override
     public void afterPropertiesSet() {
         Keycloak keycloak = KeycloakBuilder.builder()
-                .serverUrl("http://localhost:8080")
+                .serverUrl(keycloakServerURL)
                 .grantType(OAuth2Constants.PASSWORD)
                 .realm(realmName)
                 .clientId(clientId)
@@ -56,8 +68,10 @@ public class KeycloakConfiguration implements InitializingBean {
 
         RealmResource realm = keycloak.realm(realmName);
         IdentityProvidersResource identityProvidersResource = realm.identityProviders();
-        identityProvidersResource.create(createIdentityProvider("github", githubClient, githubSecret));
-        identityProvidersResource.create(createIdentityProvider("google", googleClient, googleSecret));
+        identityProvidersResource
+                .create(createIdentityProvider("github", githubClient, githubSecret));
+        identityProvidersResource
+                .create(createIdentityProvider("google", googleClient, googleSecret));
     }
 
     private Boolean isAlreadyCreateAdminClient(final Keycloak keycloak) {
@@ -74,12 +88,12 @@ public class KeycloakConfiguration implements InitializingBean {
         clientRepresentation.setClientId(adminClientId);
         clientRepresentation.setSecret(adminClientSecret);
         clientRepresentation.setRedirectUris(List.of(
-                "http://localhost/auth",
-                "http://localhost:8080/realms/master/broker/google/endpoint",
-                "http://localhost:8080/realms/master/broker/github/endpoint"
+                keycloakAuthServerURL,
+                googleRedirectURI,
+                githubRedirectURI
         ));
-        clientRepresentation.setWebOrigins(List.of("http://localhost:80/*"));
-        clientRepresentation.setRootUrl("http://localhost/auth");
+        clientRepresentation.setWebOrigins(List.of(clientServerURL + "/*"));
+        clientRepresentation.setRootUrl(clientServerURL + "/auth");
 
         Response response = keycloak.realm(realmName).clients().create(clientRepresentation);
 

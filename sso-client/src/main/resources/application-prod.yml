@@ -1,0 +1,22 @@
+spring:
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: http://52.79.197.136:8080/realms/master
+      client:
+        provider:
+          keycloak:
+            issuer-uri: http://52.79.197.136:8080/realms/master
+        registration:
+          keycloak:
+            redirect-uri: "http://52.79.197.136:8080/login/oauth2/code/keycloak"
+          google:
+            redirect-uri: "http://52.79.197.136:8080/realms/master/broker/google/endpoint"
+          github:
+            redirect-uri: "http://52.79.197.136:8080/realms/master/broker/github/endpoint"
+
+keycloak:
+  client-url: http://52.79.197.136
+  server-url: http://52.79.197.136:8080
+  auth-server-url: http://52.79.197.136:8080/auth

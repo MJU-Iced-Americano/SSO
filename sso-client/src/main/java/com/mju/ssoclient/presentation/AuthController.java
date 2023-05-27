@@ -3,6 +3,7 @@ package com.mju.ssoclient.presentation;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.mju.ssoclient.security.OauthToken;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
@@ -21,13 +22,15 @@ import java.net.URLEncoder;
 
 @RestController
 public class AuthController {
+    @Value("${keycloak.client-url}")
+    private String keycloakClientUrl;
+    @Value("${keycloak.server-url}")
+    private String keycloakServerUrl;
 
-    // Client 설정헤서 Valid redirect URIs을 http://localhost:80/auth로 설정해야 함.
     @GetMapping(path = "/auth")
     public OauthToken auth(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         String code = request.getParameter("code");
-        System.out.println("코드 받아졌나" + code);
 
         RestTemplate rt = new RestTemplate();
         HttpHeaders headers = new HttpHeaders();
@@ -35,18 +38,17 @@ public class AuthController {
         headers.add("Accept", "application/json");
 
         MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
-        // keycloak꺼 client_id, client_secret
         params.add("client_id", "admin-client");
         params.add("client_secret", "admin-secret");
 
-        params.add("redirect_uri", "http://localhost:80/auth");
+        params.add("redirect_uri", keycloakClientUrl + "/auth");
         params.add("grant_type", "authorization_code");
         params.add("code", URLEncoder.encode(code, "UTF-8"));
 
         HttpEntity<MultiValueMap<String, String>> githubTokenRequest =
                 new HttpEntity<>(params, headers);
         ResponseEntity<String> accessTokenResponse = rt.exchange(
-                "http://localhost:8080/realms/master/protocol/openid-connect/token",
+                keycloakServerUrl + "/realms/master/protocol/openid-connect/token",
                 HttpMethod.POST,
                 githubTokenRequest,
                 String.class
