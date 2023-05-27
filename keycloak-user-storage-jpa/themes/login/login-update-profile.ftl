@@ -63,6 +63,12 @@
                         </div>
                     </div>
 
+                    <label>
+                        <div>성별</div>
+                        <input type="radio" id="gender" name="gender" value="woman">여
+                        <input type="radio" id="gender" name="gender" value="man">남
+                    </label>
+
                     <div>
                         <div>
                             <label for="user.attributes.lastName">주소</label>
@@ -72,22 +78,29 @@
                         </div>
                     </div>
 
-                    <div class="login-field">
-                        <label for="user.attributes.gender" class="login-field"> 성별 </label>
-                    </div>
-                    <div class="login-field">
-                        <select id="user.attributes.gender" name="user.attributes.gender" class="login-field">
-                            <option value="MALE">남성</option>
-                            <option value="FEMALE">여성</option>
-                        </select>
-                    </div>
-                    <div class="login-field">
-                        <label for="user.attributes.birth" class="login-field"> 생년월일 </label>
-                    </div>
-                    <div class="login-field">
-                        <input type="date" id="user.attributes.birth" class="login-field" name="user.attributes.birth"/>
-                    </div>
+                    <div>
+                         <div>
+                             <label for="user.attributes.gender"> 성별 </label>
+                         </div>
+                         <div>
+                             <select id="user.attributes.gender" name="user.attributes.gender">
+                                 <option value="MALE">남성</option>
+                                 <option value="FEMALE">여성</option>
+                             </select>
+                         </div>
+                     </div>
+                    <div>
 
+                    <div>
+                         <div>
+                             <label for="user.attributes.birth"> 생년월일 </label>
+                         </div>
+                         <div>
+                             <input type="date" id="user.attributes.birth"
+                                    name="user.attributes.birth"
+                                    value="${(user.attributes.birth!'')}"/>
+                         </div>
+                     </div>
                     <button class="submit" type="submit">등록 버튼</button>
                 </form>
             </div>
