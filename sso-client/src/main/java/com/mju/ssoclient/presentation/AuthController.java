@@ -36,8 +36,8 @@ public class AuthController {
 
         MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
         // keycloak꺼 client_id, client_secret
-        params.add("client_id", "my_client");
-        params.add("client_secret", "xsDfbw9ZtqwpoLaYBt9NmqXxrCAbZoFg");
+        params.add("client_id", "admin-client");
+        params.add("client_secret", "admin-secret");
 
         params.add("redirect_uri", "http://localhost:80/auth");
         params.add("grant_type", "authorization_code");
@@ -46,7 +46,7 @@ public class AuthController {
         HttpEntity<MultiValueMap<String, String>> githubTokenRequest =
                 new HttpEntity<>(params, headers);
         ResponseEntity<String> accessTokenResponse = rt.exchange(
-                "http://localhost:8080/realms/my_realm/protocol/openid-connect/token",
+                "http://localhost:8080/realms/master/protocol/openid-connect/token",
                 HttpMethod.POST,
                 githubTokenRequest,
                 String.class
