@@ -63,12 +63,6 @@
                         </div>
                     </div>
 
-                    <label>
-                        <div>성별</div>
-                        <input type="radio" id="gender" name="gender" value="woman">여
-                        <input type="radio" id="gender" name="gender" value="man">남
-                    </label>
-
                     <div>
                         <div>
                             <label for="user.attributes.lastName">주소</label>
