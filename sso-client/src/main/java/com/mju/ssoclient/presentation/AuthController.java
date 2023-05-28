@@ -28,7 +28,7 @@ public class AuthController {
     private String keycloakServerUrl;
 
     @GetMapping(path = "/auth")
-    public OauthToken auth(HttpServletRequest request, HttpServletResponse response)
+    public void auth(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         String code = request.getParameter("code");
 
@@ -62,6 +62,9 @@ public class AuthController {
             e.printStackTrace();
         }
 
-        return oauthToken;
+        String frontendURL = "http://socoa.online/";
+        String authorizationHeader = "Bearer " + oauthToken.getAccessToken();
+        response.setHeader("Authorization", authorizationHeader);
+        response.sendRedirect(frontendURL);
     }
 }
