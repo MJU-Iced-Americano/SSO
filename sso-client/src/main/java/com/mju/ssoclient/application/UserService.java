@@ -1,10 +1,12 @@
 package com.mju.ssoclient.application;
 
 import com.mju.ssoclient.application.dto.UserJoinRequest;
+import com.mju.ssoclient.application.dto.UserResponse;
 import com.mju.ssoclient.domain.UserRepository;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.mju.domain.UserEntity;
 import org.springframework.stereotype.Service;
 
 @Slf4j
@@ -18,5 +20,9 @@ public class UserService {
         String joinUserId = userRepository.join(userMapper.userFrom(userJoinRequest));
         log.info("UserId : {} Join Success ", joinUserId);
         return joinUserId;
+    }
+
+    public UserResponse getUserResponse(final String userId) {
+        return userRepository.findById(userId);
     }
 }

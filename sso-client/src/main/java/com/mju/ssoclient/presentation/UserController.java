@@ -2,15 +2,18 @@ package com.mju.ssoclient.presentation;
 
 import com.mju.ssoclient.application.UserService;
 import com.mju.ssoclient.application.dto.UserJoinRequest;
+import com.mju.ssoclient.application.dto.UserResponse;
 import java.io.IOException;
 import java.net.URI;
 import java.security.Principal;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
+import org.mju.domain.UserEntity;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -46,5 +49,11 @@ class UserController {
                 + "/realms/master/protocol/openid-connect/auth?response_type=code&client_id=admin-client&redirect_uri="
                 + keycloakClientUrl + "/auth&scope=openid&nonce=asb3"
         );
+    }
+
+    @GetMapping("/response_user/{userId}")
+    public ResponseEntity<UserResponse> getResponseUser(@PathVariable String userId) {
+        UserResponse userResponse = userService.getUserResponse(userId);
+        return ResponseEntity.ok().body(userResponse);
     }
 }
