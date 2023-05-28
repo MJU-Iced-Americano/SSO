@@ -39,9 +39,6 @@ dependencies {
     implementation 'org.keycloak:keycloak-admin-client:21.0.2'
     implementation 'org.springframework.boot:spring-boot-starter-oauth2-client:2.7.10'
 
-    //Eureka
-    implementation 'org.springframework.cloud:spring-cloud-starter-openfeign:4.0.1'
-
     // keycloak-user-storage-jpa module
     implementation project(':keycloak-user-storage-jpa')
 
