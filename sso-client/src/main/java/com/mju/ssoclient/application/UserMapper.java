@@ -5,6 +5,7 @@ import org.mju.domain.AdditionalInformation;
 import org.mju.domain.Birth;
 import org.mju.domain.Gender;
 import org.mju.domain.UserEntity;
+import org.mju.domain.UserInformationType;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -15,6 +16,7 @@ class UserMapper {
                 userJoinRequest.getPhoneNumber(),
                 userJoinRequest.getAddress(),
                 Gender.valueOf(userJoinRequest.getGender()),
+                UserInformationType.valueOf(userJoinRequest.getUserInformationType()),
                 new Birth(userJoinRequest.getBirth()),
                 userJoinRequest.getProfileImageUrl()
         );

@@ -97,6 +97,17 @@
                         </div>
                     </div>
 
+                    <div class="${properties.kcFormGroupClass!}">
+                        <div class="mdc-text-field mdc-text-field--with-leading-icon ${properties.kcLabelClass!}">
+                            <label class="mdc-floating-label ${properties.kcLabelClass!}" id="user.attributes.userInformationTypeLabel" for="user.attributes.userInformationType"> 유저 타입 </label>
+                            <select tabindex="0" class="mdc-select ${properties.kcInputClass!}" id="user.attributes.userInformationType" name="user.attributes.userInformationType">
+                                <option value=""></option>
+                                <option value="STUDENT">학생</option>
+                                <option value="TEACHER">강사</option>
+                            </select>
+                        </div>
+                    </div>
+
                     <style>
                         select{
                             border: none;

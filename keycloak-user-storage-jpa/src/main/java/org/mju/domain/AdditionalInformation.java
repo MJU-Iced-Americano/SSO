@@ -17,6 +17,9 @@ public class AdditionalInformation {
     @Enumerated(value = EnumType.STRING)
     private Gender gender;
 
+    @Enumerated(value = EnumType.STRING)
+    private UserInformationType userInformationType;
+
     @Embedded
     private Birth birth = new Birth();
 
@@ -32,6 +35,7 @@ public class AdditionalInformation {
             final String phoneNumber,
             final String address,
             final Gender gender,
+            final UserInformationType userInformationType,
             final Birth birth,
             final String profileImageUrl
     ) {
@@ -39,6 +43,7 @@ public class AdditionalInformation {
         this.phoneNumber = phoneNumber;
         this.address = address;
         this.gender = gender;
+        this.userInformationType = userInformationType;
         this.birth = birth;
         this.profileImageUrl = profileImageUrl;
     }
@@ -57,6 +62,10 @@ public class AdditionalInformation {
 
     public Gender getGender() {
         return gender;
+    }
+
+    public UserInformationType getUserInformationType() {
+        return userInformationType;
     }
 
     public Birth getBirth() {
