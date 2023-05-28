@@ -86,7 +86,7 @@ public class KeycloakConfiguration implements InitializingBean {
         clientRepresentation.setClientId(adminClientId);
         clientRepresentation.setSecret(adminClientSecret);
         clientRepresentation.setRedirectUris(List.of(
-                keycloakServerURL + "/auth",
+                clientServerURL + "/auth",
                 googleRedirectURI,
                 githubRedirectURI
         ));
