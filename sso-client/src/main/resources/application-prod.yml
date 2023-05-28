@@ -19,4 +19,3 @@ spring:
 keycloak:
   client-url: http://socoa-login.site
   server-url: http://socoa-login.site:8080
-  auth-server-url: http://socoa-login.site:8080/auth

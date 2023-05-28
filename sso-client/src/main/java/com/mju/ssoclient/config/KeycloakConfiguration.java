@@ -46,9 +46,7 @@ public class KeycloakConfiguration implements InitializingBean {
     private String googleRedirectURI;
     @Value("${keycloak.server-url}")
     private String keycloakServerURL;
-    @Value("${keycloak.auth-server-url}")
-    private String keycloakAuthServerURL;
-    @Value("${keycloak.auth-server-url}")
+    @Value("${keycloak.client-url}")
     private String clientServerURL;
 
     @Override
@@ -88,7 +86,7 @@ public class KeycloakConfiguration implements InitializingBean {
         clientRepresentation.setClientId(adminClientId);
         clientRepresentation.setSecret(adminClientSecret);
         clientRepresentation.setRedirectUris(List.of(
-                keycloakAuthServerURL,
+                keycloakServerURL + "/auth",
                 googleRedirectURI,
                 githubRedirectURI
         ));

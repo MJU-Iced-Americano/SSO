@@ -2,11 +2,11 @@ package com.mju.ssoclient.presentation;
 
 import com.mju.ssoclient.application.UserService;
 import com.mju.ssoclient.application.dto.UserJoinRequest;
+import java.io.IOException;
 import java.net.URI;
 import java.security.Principal;
 import javax.servlet.http.HttpServletRequest;
-import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
+import javax.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
@@ -40,9 +40,11 @@ class UserController {
 
 
     @GetMapping("/login")
-    public String login(Principal principal, HttpServletRequest request) {
-        return "redirect:http://" + keycloakServerUrl
-                + "/realms/master/protocol/openid-connect/auth?response_type=code&client_id=admin-client&redirect_uri=http://"
-                + keycloakClientUrl + "/auth&scope=openid&nonce=asb3";
+    public void login(Principal principal, HttpServletRequest request, HttpServletResponse response)
+            throws IOException {
+        response.sendRedirect(keycloakServerUrl
+                + "/realms/master/protocol/openid-connect/auth?response_type=code&client_id=admin-client&redirect_uri="
+                + keycloakClientUrl + "/auth&scope=openid&nonce=asb3"
+        );
     }
 }

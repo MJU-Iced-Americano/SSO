@@ -22,7 +22,6 @@ class KeycloakUserRepository implements UserRepository {
     private KeycloakUserRepository(
             final KeycloakUserRepresentationMapper keycloakUserRepresentationMapper,
             final KeycloakUserResponseValidator keycloakUserResponseValidator,
-            @Value("${keycloak.auth-server-url}") final String keycloakServerUrl,
             @Value("${keycloak.realm}") final String realmName,
             @Value("${mykeycloak.client.id}") final String clientId,
             @Value("${mykeycloak.admin.name}") final String adminUserName,
