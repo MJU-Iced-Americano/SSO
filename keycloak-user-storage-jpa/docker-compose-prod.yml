@@ -13,7 +13,7 @@ services:
       KEYCLOAK_ADMIN: admin
       KEYCLOAK_ADMIN_PASSWORD: 1234
     volumes:
-      - ./build/libs/keycloak-user-storage-jpa.jar:/opt/keycloak/lib/providers/keycloak-user-storage-jpa.jar
+      - ./build/libs/keycloak-user-storage-jpa.jar:/opt/keycloak/providers/keycloak-user-storage-jpa.jar
       - ./conf/quarkus-prod.properties:/opt/keycloak/conf/quarkus.properties
       - ./ObjectStore/:/ObjectStore/
       - ./themes:/opt/keycloak/themes/custom/
