@@ -12,6 +12,8 @@
   font-weight: 400;
   src: local("Material Icons"), local("MaterialIcons-Regular"), url(../fonts/MaterialIcons-Regular.woff2) format("woff2"), url(../fonts/MaterialIcons-Regular.woff) format("woff");
 }
+
+
 .material-icons {
   font-family: "Material Icons";
   font-weight: normal;
@@ -185,9 +187,9 @@ $mdc-theme-on-background: #442C2E;
 }
 
 .mdc-button:not(:disabled) {
-  color: #FF5722;
+  color: #000000;
   /* @alternate */
-  color: var(--mdc-theme-primary, #FF5722);
+  color: var(--mdc-theme-primary, #000000);
 }
 
 .mdc-button:disabled {
@@ -259,9 +261,8 @@ svg.mdc-button__icon {
 
 .mdc-button--raised:not(:disabled),
 .mdc-button--unelevated:not(:disabled) {
-  background-color: #FF5722;
+  background-color: #6667AB;
   /* @alternate */
-  background-color: var(--mdc-theme-primary, #FF5722);
 }
 
 .mdc-button--raised:not(:disabled),
@@ -2603,8 +2604,12 @@ a.mdc-list-item {
   right: initial;
   top: 50%;
   transform: translateY(-50%);
-  pointer-events: none;
 }
+
+.mdc-text-field .mdc-floating-label:checked ~ .mdc-text-field .mdc-floating-label {
+  display: none;
+}
+
 
 [dir=rtl] .mdc-text-field .mdc-floating-label, .mdc-text-field .mdc-floating-label[dir=rtl] {
   /* @noflip */
@@ -2694,7 +2699,6 @@ a.mdc-list-item {
   text-transform: inherit;
   /* @alternate */
   text-transform: var(--mdc-typography-subtitle1-text-transform, inherit);
-  padding: 20px 16px 7px;
   align-self: flex-end;
   box-sizing: border-box;
   width: 100%;
@@ -2912,7 +2916,7 @@ a.mdc-list-item {
 
 .mdc-text-field--with-leading-icon .mdc-text-field__input {
   /* @noflip */
-  padding-left: 48px;
+  padding-left: 16px;
   /* @noflip */
   padding-right: 16px;
 }
@@ -2926,7 +2930,6 @@ a.mdc-list-item {
 
 .mdc-text-field--with-leading-icon .mdc-floating-label {
   /* @noflip */
-  left: 48px;
   /* @noflip */
   right: initial;
 }

@@ -1,4 +1,5 @@
 <#import "template.ftl" as layout>
+
 <@layout.registrationLayout displayInfo=social.displayInfo displayWide=(realm.password && social.providers??); section>
     <#if section = "header">
         ${msg("doLogIn")}
@@ -8,12 +9,26 @@
                 <#if realm.password>
                     <form id="kc-form-login" onsubmit="login.disabled = true; return true;" action="${url.loginAction}" method="post">
 
+                        <#--
                         <div class="${properties.kcFormGroupClass!}">
+                            <label for="username" class="${properties.kcLabelClass!}"><#if !realm.loginWithEmailAllowed>${msg("username")}<#elseif !realm.registrationEmailAsUsername>${msg("usernameOrEmail")}<#else>${msg("email")}</#if></label>
+
+                            <#if usernameEditDisabled??>
+                                <input tabindex="1" id="username" class="${properties.kcInputClass!}" name="username" value="${(login.username!'')}" type="text" disabled />
+                            <#else>
+                                <input tabindex="1" id="username" class="${properties.kcInputClass!}" name="username" value="${(login.username!'')}"  type="text" autofocus autocomplete="off" />
+                            </#if>
+                        </div>
+                        -->
+
+                        <div class="${properties.kcFormGroupClass!}">
+
                             <div class="mdc-text-field mdc-text-field--with-leading-icon ${properties.kcLabelClass!} <#if usernameEditDisabled??>mdc-text-field--disabled</#if>">
-                                <i class="material-icons mdc-text-field__icon" role="button">person</i>
+                                <i class="material-icons mdc-text-field__icon" role="button"></i>
+                                <#--유저네임 또는 이메일 입력란-->
                                 <input tabindex="0" required id="username" class="mdc-text-field__input ${properties.kcInputClass!}" name="username" value="${(login.username!'')}" type="text" autofocus autocomplete="off" <#if usernameEditDisabled??>disabled</#if>>
                                 <div class="mdc-line-ripple"></div>
-                                <label for="username" class="mdc-floating-label ${properties.kcLabelClass!}">
+                                <label id="usernameLabel" for="username" class="mdc-floating-label ${properties.kcLabelClass!}">
                                     <#if !realm.loginWithEmailAllowed>
                                         ${msg("username")}
                                     <#elseif !realm.registrationEmailAsUsername>
@@ -23,16 +38,84 @@
                                     </#if>
                                 </label>
                             </div>
+
                         </div>
+
+                        <script>
+                            // input 요소 가져오기
+                            var usernameInput = document.getElementById('username');
+
+                            // input 값 변경 이벤트 처리
+                            usernameInput.addEventListener('input', function() {
+                                // 입력 값이 있는지 확인
+                                if (usernameInput.value.trim() !== '') {
+                                    // label의 가시성 숨기기
+                                    document.getElementById('usernameLabel').style.display = 'none';
+                                } else {
+                                    // label의 가시성 표시
+                                    document.getElementById('usernameLabel').style.display = 'block';
+                                }
+                            });
+                        </script>
+
+
+                        <#--
+                        <div class="${properties.kcFormGroupClass!}">
+                            <label for="password" class="${properties.kcLabelClass!}">${msg("password")}</label>
+                            <input tabindex="2" id="password" class="${properties.kcInputClass!}" name="password" type="password" autocomplete="off" />
+                        </div>
+                        -->
 
                         <div class="${properties.kcFormGroupClass!}">
                             <div class="mdc-text-field mdc-text-field--with-leading-icon ${properties.kcLabelClass!}">
-                                <i class="material-icons mdc-text-field__icon" role="button">lock</i>
+                                <#--비밀번호 입력란-->
+                                <i class="material-icons mdc-text-field__icon" role="button"></i>
                                 <input tabindex="0" required id="password" class="mdc-text-field__input ${properties.kcInputClass!}" name="password" type="password" autocomplete="off">
                                 <div class="mdc-line-ripple"></div>
-                                <label for="password" class="mdc-floating-label ${properties.kcLabelClass!}">${msg("password")}</label>
+                                <label id="passwordLabel" for="password" class="mdc-floating-label ${properties.kcLabelClass!}">${msg("password")}</label>
                             </div>
                         </div>
+
+                        <script>
+                            // input 요소 가져오기
+                            var passwordInput = document.getElementById('password');
+
+                            // input 값 변경 이벤트 처리
+                            passwordInput.addEventListener('input', function() {
+                                // 입력 값이 있는지 확인
+                                if (passwordInput.value.trim() !== '') {
+                                    // label의 가시성 숨기기
+                                    document.getElementById('passwordLabel').style.display = 'none';
+                                } else {
+                                    // label의 가시성 표시
+                                    document.getElementById('passwordLabel').style.display = 'block';
+                                }
+                            });
+                        </script>
+
+
+                        <#--
+                        <div class="${properties.kcFormGroupClass!} ${properties.kcFormSettingClass!}">
+                           <div id="kc-form-options">
+                               <#if realm.rememberMe && !usernameEditDisabled??>
+                                   <div class="checkbox">
+                                       <label>
+                                           <#if login.rememberMe??>
+                                               <input tabindex="3" id="rememberMe" name="rememberMe" type="checkbox" checked> ${msg("rememberMe")}
+                                           <#else>
+                                               <input tabindex="3" id="rememberMe" name="rememberMe" type="checkbox"> ${msg("rememberMe")}
+                                           </#if>
+                                       </label>
+                                   </div>
+                               </#if>
+                           </div>
+                           <div class="${properties.kcFormOptionsWrapperClass!}">
+                               <#if realm.resetPasswordAllowed>
+                                   <span><a tabindex="5" href="${url.loginResetCredentialsUrl}">${msg("doForgotPassword")}</a></span>
+                               </#if>
+                           </div>
+                        </div>
+                        -->
 
                         <div class="${properties.kcFormGroupClass!} ${properties.kcFormSettingClass!}">
                             <div id="kc-form-options">
@@ -70,6 +153,13 @@
                             </div>
                         </div>
 
+                        <#--
+                        <div id="kc-form-buttons" class="${properties.kcFormGroupClass!}">
+                            <input type="hidden" id="id-hidden-input" name="credentialId" <#if auth.selectedCredential?has_content>value="${auth.selectedCredential}"</#if>/>
+                            <input tabindex="4" class="${properties.kcButtonClass!} ${properties.kcButtonPrimaryClass!} ${properties.kcButtonBlockClass!} ${properties.kcButtonLargeClass!}" name="login" id="kc-login" type="submit" value="${msg("doLogIn")}"/>
+                        </div>
+                        -->
+
                         <div class="mdc-card__action-icons">
                             <div class="mdc-card__action-buttons">
                                 <button tabindex="0" name="login" id="kc-login" type="submit" class="mdc-button mdc-button--raised mdc-card__action">
@@ -77,16 +167,21 @@
                                 </button>
                             </div>
                         </div>
+
                     </form>
                 </#if>
             </div>
             <#if realm.password && social.providers??>
                 <div id="kc-social-providers" class="${properties.kcFormSocialAccountContentClass!} ${properties.kcFormSocialAccountClass!}">
-                    <ul class="${properties.kcFormSocialAccountListClass!} <#if social.providers?size gt 4>${properties.kcFormSocialAccountDoubleListClass!}</#if>">
+                    <div class="${properties.kcFormSocialAccountListClass!} <#if social.providers?size gt 4>${properties.kcFormSocialAccountDoubleListClass!}</#if>">
                         <#list social.providers as p>
-                            <li class="${properties.kcFormSocialAccountListLinkClass!}"><a href="${p.loginUrl}" id="zocial-${p.alias}" class="zocial ${p.providerId}"> <span>${p.displayName}</span></a></li>
+                            <div  class="${properties.kcFormSocialAccountListLinkClass!}">
+                                <a href="${p.loginUrl}" id="zocial-${p.alias}" class="zocial ${p.providerId}">
+                                    <span>with ${p.displayName}</span>
+                                </a>
+                            </div>
                         </#list>
-                    </ul>
+                    </div>
                 </div>
             </#if>
         </div>
