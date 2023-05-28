@@ -89,8 +89,6 @@
                                    value="null"/>
                         </div>
                     </div>
-
-
                     <div>
                         <div class="login-field">
                             <label for="user.attributes.gender" class="login-field"> 성별 </label>
@@ -99,6 +97,17 @@
                             <select id="user.attributes.gender" name="user.attributes.gender">
                                 <option value="MALE">남성</option>
                                 <option value="FEMALE">여성</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="login-field">
+                            <label for="user.attributes.userInformationType" class="login-field"> 유저 타입 </label>
+                        </div>
+                        <div class="login-field">
+                            <select id="user.attributes.userInformationType" name="user.attributes.userInformationType">
+                                <option value="STUDENT">학생</option>
+                                <option value="TEACHER">강사</option>
                             </select>
                         </div>
                     </div>
