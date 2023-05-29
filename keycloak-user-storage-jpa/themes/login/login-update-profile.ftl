@@ -1,7 +1,7 @@
 <#import "template.ftl" as layout>
 <@layout.registrationLayout displayInfo=social.displayInfo; section>
-    <#if section = "title">
-        커스텀 회원 정보 추가 타이틀
+    <#if section = "header">
+        UPDATE PROFILE
     <#elseif section = "header">
         <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
     <#elseif section = "message">

@@ -1,18 +1,13 @@
 <#import "template.ftl" as layout>
 <@layout.registrationLayout displayInfo=social.displayInfo; section>
-    <#if section = "title">
-        커스텀 회원 가입 타이틀
+    <#if section = "header">
+        SOCOA REGISTER
     <#elseif section = "header">
         <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
     <#elseif section = "message">
     <#--  type종류: success, warning, error, info  -->
         <div class="alert alert-${message.type}">
             <span class="message-text">${message.summary?no_esc}</span>
-        </div>
-    <#elseif section = "app-head">
-        <div class="app-name-wrapper">
-            <img src="https://go.dev/images/gophers/motorcycle.svg"/>
-            <h1 class="app-name">회원 가입</h1>
         </div>
     <#elseif section = "form">
         <#if realm.password>
@@ -22,7 +17,7 @@
                         <div class="login-field">
                             <label for="user.attributes.email" class="login-field"> 이메일 </label>
                         </div>
-                        <div class="login-field">
+                        <div>
                             <input type="text" id="user.attributes.email" class="login-field"
                                    name="user.attributes.email"
                                    value="${(register.formData['user.attributes.email']!'')}"/>
@@ -47,16 +42,14 @@
                                    autocomplete="new-password" required>
                         </label>
                     </div>
-                    <div>
-                        <div class="login-field">
-                            <label for="user.attributes.nickname" class="login-field"> 닉네임 </label>
+
+                    <div class="${properties.kcFormGroupClass!}" >
+                        <div class="mdc-text-field mdc-text-field--with-leading-icon ${properties.kcLabelClass!}">
+                            <label id="user.attributes.nicknameLabel" for="user.attributes.nickname" class="mdc-floating-label ${properties.kcLabelClass!}">닉네임</label>
+                            <input id="user.attributes.nickname" type="text" class="mdc-text-field__input ${properties.kcInputClass!}" name="user.attributes.nickname" value="${(register.formData['user.attributes.nickname']!'')}" />
                         </div>
-                        <div class="login-field">
-                            <input type="text" id="user.attributes.nickname" class="login-field"
-                                   name="user.attributes.nickname"
-                                   value="${(register.formData['user.attributes.nickname']!'')}"/>
-                        </div>
-                    </div>
+
+
                     <div>
                         <div class="login-field">
                             <label for="user.attributes.phoneNumber" class="login-field"> 전화번호 </label>
