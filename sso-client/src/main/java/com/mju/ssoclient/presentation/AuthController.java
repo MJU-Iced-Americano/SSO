@@ -3,6 +3,12 @@ package com.mju.ssoclient.presentation;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.mju.ssoclient.security.OauthToken;
+import java.io.IOException;
+import java.net.URLEncoder;
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -14,12 +20,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
-import java.net.URLEncoder;
-
+@Slf4j
 @RestController
 public class AuthController {
     @Value("${keycloak.client-url}")
@@ -28,8 +29,7 @@ public class AuthController {
     private String keycloakServerUrl;
 
     @GetMapping(path = "/auth")
-    public void auth(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
+    public void auth(HttpServletRequest request, HttpServletResponse response) throws IOException {
         String code = request.getParameter("code");
 
         RestTemplate rt = new RestTemplate();
@@ -62,9 +62,12 @@ public class AuthController {
             e.printStackTrace();
         }
 
-        String frontendURL = "http://socoa.online/";
+        String redirectURL = "http://43.200.124.135/user-service/login";
         String authorizationHeader = "Bearer " + oauthToken.getAccessToken();
         response.setHeader("Authorization", authorizationHeader);
-        response.sendRedirect(frontendURL);
+        Cookie cookie = new Cookie("SOCOA-SSO-TOKEN", oauthToken.getIdToken());
+        cookie.setMaxAge(6 * 60 * 60);
+        response.addCookie(cookie);
+        response.sendRedirect(redirectURL);
     }
 }
