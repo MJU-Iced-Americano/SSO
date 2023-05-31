@@ -66,6 +66,7 @@ public class AuthController {
         String authorizationHeader = "Bearer " + oauthToken.getAccessToken();
         response.setHeader("Authorization", authorizationHeader);
         Cookie cookie = new Cookie("SOCOA-SSO-TOKEN", oauthToken.getIdToken());
+        cookie.setDomain("socoa.online");
         cookie.setMaxAge(6 * 60 * 60);
         response.addCookie(cookie);
         response.sendRedirect(redirectURL);
