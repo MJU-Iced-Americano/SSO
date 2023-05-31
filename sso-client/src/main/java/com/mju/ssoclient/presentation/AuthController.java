@@ -62,7 +62,7 @@ public class AuthController {
             e.printStackTrace();
         }
 
-        String redirectURL = "http://43.200.124.135/user-service/login";
+        String redirectURL = "http://gateway.socoa.online/user-service/login";
         String authorizationHeader = "Bearer " + oauthToken.getAccessToken();
         response.setHeader("Authorization", authorizationHeader);
         Cookie cookie = new Cookie("SOCOA-SSO-TOKEN", oauthToken.getIdToken());
