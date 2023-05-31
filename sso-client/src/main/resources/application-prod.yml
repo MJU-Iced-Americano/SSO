@@ -1,21 +1,24 @@
+server:
+  domain: login.socoa.online
+
 spring:
   security:
     oauth2:
       resourceserver:
         jwt:
-          issuer-uri: http://socoa-login.site:8080/realms/master
+          issuer-uri: http://${server.domain}:8080/realms/master
       client:
         provider:
           keycloak:
-            issuer-uri: http://socoa-login.site:8080/realms/master
+            issuer-uri: http://${server.domain}:8080/realms/master
         registration:
           keycloak:
-            redirect-uri: "http://socoa-login.site:8080/login/oauth2/code/keycloak"
+            redirect-uri: "http://${server.domain}:8080/login/oauth2/code/keycloak"
           google:
-            redirect-uri: "http://socoa-login.site:8080/realms/master/broker/google/endpoint"
+            redirect-uri: "http://${server.domain}:8080/realms/master/broker/google/endpoint"
           github:
-            redirect-uri: "http://socoa-login.site:8080/realms/master/broker/github/endpoint"
+            redirect-uri: "http://${server.domain}:8080/realms/master/broker/github/endpoint"
 
 keycloak:
-  client-url: http://socoa-login.site
-  server-url: http://socoa-login.site:8080
+  client-url: http://${server.domain}
+  server-url: http://${server.domain}:8080
