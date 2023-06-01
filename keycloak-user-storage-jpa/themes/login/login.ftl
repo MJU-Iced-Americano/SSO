@@ -1,26 +1,14 @@
 <#import "template.ftl" as layout>
 
+    <div class="loginPage">
 <@layout.registrationLayout displayInfo=social.displayInfo displayWide=(realm.password && social.providers??); section>
     <#if section = "header">
         ${msg("doLogIn")}
     <#elseif section = "form">
-        <div id="kc-form" <#if realm.password && social.providers??>class="${properties.kcContentWrapperClass!}"</#if>>
+        <div id="kc-form" <#if realm.password && social.providers??> class="${properties.kcContentWrapperClass!}"</#if>>
             <div id="kc-form-wrapper" <#if realm.password && social.providers??>class="${properties.kcFormSocialAccountContentClass!} ${properties.kcFormSocialAccountClass!}"</#if>>
                 <#if realm.password>
                     <form id="kc-form-login" onsubmit="login.disabled = true; return true;" action="${url.loginAction}" method="post">
-
-                        <#--
-                        <div class="${properties.kcFormGroupClass!}">
-                            <label for="username" class="${properties.kcLabelClass!}"><#if !realm.loginWithEmailAllowed>${msg("username")}<#elseif !realm.registrationEmailAsUsername>${msg("usernameOrEmail")}<#else>${msg("email")}</#if></label>
-
-                            <#if usernameEditDisabled??>
-                                <input tabindex="1" id="username" class="${properties.kcInputClass!}" name="username" value="${(login.username!'')}" type="text" disabled />
-                            <#else>
-                                <input tabindex="1" id="username" class="${properties.kcInputClass!}" name="username" value="${(login.username!'')}"  type="text" autofocus autocomplete="off" />
-                            </#if>
-                        </div>
-                        -->
-
                         <div class="${properties.kcFormGroupClass!}">
 
                             <div class="mdc-text-field mdc-text-field--with-leading-icon ${properties.kcLabelClass!} <#if usernameEditDisabled??>mdc-text-field--disabled</#if>">
@@ -38,7 +26,6 @@
                                     </#if>
                                 </label>
                             </div>
-
                         </div>
 
                         <script>
@@ -57,14 +44,6 @@
                                 }
                             });
                         </script>
-
-
-                        <#--
-                        <div class="${properties.kcFormGroupClass!}">
-                            <label for="password" class="${properties.kcLabelClass!}">${msg("password")}</label>
-                            <input tabindex="2" id="password" class="${properties.kcInputClass!}" name="password" type="password" autocomplete="off" />
-                        </div>
-                        -->
 
                         <div class="${properties.kcFormGroupClass!}">
                             <div class="mdc-text-field mdc-text-field--with-leading-icon ${properties.kcLabelClass!}">
@@ -92,30 +71,6 @@
                                 }
                             });
                         </script>
-
-
-                        <#--
-                        <div class="${properties.kcFormGroupClass!} ${properties.kcFormSettingClass!}">
-                           <div id="kc-form-options">
-                               <#if realm.rememberMe && !usernameEditDisabled??>
-                                   <div class="checkbox">
-                                       <label>
-                                           <#if login.rememberMe??>
-                                               <input tabindex="3" id="rememberMe" name="rememberMe" type="checkbox" checked> ${msg("rememberMe")}
-                                           <#else>
-                                               <input tabindex="3" id="rememberMe" name="rememberMe" type="checkbox"> ${msg("rememberMe")}
-                                           </#if>
-                                       </label>
-                                   </div>
-                               </#if>
-                           </div>
-                           <div class="${properties.kcFormOptionsWrapperClass!}">
-                               <#if realm.resetPasswordAllowed>
-                                   <span><a tabindex="5" href="${url.loginResetCredentialsUrl}">${msg("doForgotPassword")}</a></span>
-                               </#if>
-                           </div>
-                        </div>
-                        -->
 
                         <div class="${properties.kcFormGroupClass!} ${properties.kcFormSettingClass!}">
                             <div id="kc-form-options">
@@ -153,13 +108,6 @@
                             </div>
                         </div>
 
-                        <#--
-                        <div id="kc-form-buttons" class="${properties.kcFormGroupClass!}">
-                            <input type="hidden" id="id-hidden-input" name="credentialId" <#if auth.selectedCredential?has_content>value="${auth.selectedCredential}"</#if>/>
-                            <input tabindex="4" class="${properties.kcButtonClass!} ${properties.kcButtonPrimaryClass!} ${properties.kcButtonBlockClass!} ${properties.kcButtonLargeClass!}" name="login" id="kc-login" type="submit" value="${msg("doLogIn")}"/>
-                        </div>
-                        -->
-
                         <div class="mdc-card__action-icons">
                             <div class="mdc-card__action-buttons">
                                 <button tabindex="0" name="login" id="kc-login" type="submit" class="mdc-button mdc-button--raised mdc-card__action">
@@ -167,7 +115,6 @@
                                 </button>
                             </div>
                         </div>
-
                     </form>
                 </#if>
             </div>
@@ -185,6 +132,7 @@
                 </div>
             </#if>
         </div>
+
     <#elseif section = "info" >
         <#if realm.password && realm.registrationAllowed && !registrationDisabled??>
 
@@ -197,3 +145,5 @@
     </#if>
 
 </@layout.registrationLayout>
+
+    </div>
