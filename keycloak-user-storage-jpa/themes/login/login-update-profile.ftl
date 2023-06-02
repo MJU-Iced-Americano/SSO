@@ -141,6 +141,7 @@
                             <select tabindex="0" class="mdc-select ${properties.kcInputClass!}" id="user.attributes.userInformationType" name="user.attributes.userInformationType">
                                 <option value="STUDENT">학생</option>
                                 <option value="TEACHER">강사</option>
+                                <option value="MANAGER">관리자</option>
                             </select>
                         </div>
                     </div>
