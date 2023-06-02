@@ -27,6 +27,10 @@ public class AuthController {
     private String keycloakClientUrl;
     @Value("${keycloak.server-url}")
     private String keycloakServerUrl;
+    @Value("${socoa.gateway.url}")
+    private String socoaGatewayUrl;
+    @Value(("${socoa.domain}"))
+    private String domain;
 
     @GetMapping(path = "/auth")
     public void auth(HttpServletRequest request, HttpServletResponse response) throws IOException {
@@ -62,11 +66,11 @@ public class AuthController {
             e.printStackTrace();
         }
 
-        String redirectURL = "http://gateway.socoa.online:8000/user-service/login";
+        String redirectURL = socoaGatewayUrl + "/user-service/login";
         String authorizationHeader = "Bearer " + oauthToken.getAccessToken();
         response.setHeader("Authorization", authorizationHeader);
         Cookie cookie = new Cookie("SOCOA-SSO-TOKEN", oauthToken.getIdToken());
-        cookie.setDomain("socoa.online");
+        cookie.setDomain(domain);
         cookie.setMaxAge(6 * 60 * 60);
         response.addCookie(cookie);
         response.sendRedirect(redirectURL);

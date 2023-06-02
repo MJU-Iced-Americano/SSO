@@ -22,3 +22,8 @@ spring:
 keycloak:
   client-url: http://${server.domain}
   server-url: http://${server.domain}:8080
+
+socoa:
+  domain: socoa.online
+  gateway:
+    url: http://gateway.socoa.online:8000
