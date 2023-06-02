@@ -66,23 +66,39 @@ class KeycloakUserRepository implements UserRepository {
     public UserResponse findById(final String userId) {
         List<UserRepresentation> list = usersResource.list();
         for (UserRepresentation userRepresentation : list) {
-            log.info(userRepresentation.getId());
-            if(userRepresentation.getId().contains(userId)) {
-                Map<String, List<String>> attributes = userRepresentation.getAttributes();
-                return new UserResponse(
-                        userId,
-                        userRepresentation.getUsername(),
-                        userRepresentation.getEmail(),
-                        attributes.get("nickname").get(0),
-                        attributes.get("phoneNumber").get(0),
-                        attributes.get("address").get(0),
-                        attributes.get("gender").get(0),
-                        attributes.get("userInformationType").get(0),
-                        attributes.get("birth").get(0),
-                        attributes.get("profileImageUrl").get(0)
-                );
+            try {
+                log.info("findUserId : {}  originUserId : {}", userId, userRepresentation.getId());
+                if (!userId.contains(":")) {
+                    if (userRepresentation.getId().contains(userId)) {
+                        return createUserResponse(userRepresentation.getId(), userRepresentation);
+                    }
+                }
+                if (!userRepresentation.getId().contains(":")) {
+                    continue;
+                }
+                if (userRepresentation.getId().split(":")[2].equals(userId.split(":")[2])) {
+                    return createUserResponse(userId, userRepresentation);
+                }
+            } catch (Exception e) {
+                break;
             }
         }
         throw new IllegalArgumentException("존재하지 않는 유저입니다.");
+    }
+
+    private static UserResponse createUserResponse(final String userId, final UserRepresentation userRepresentation) {
+        Map<String, List<String>> attributes = userRepresentation.getAttributes();
+        return new UserResponse(
+                userId,
+                userRepresentation.getUsername(),
+                userRepresentation.getEmail(),
+                attributes.get("nickname").get(0),
+                attributes.get("phoneNumber").get(0),
+                attributes.get("address").get(0),
+                attributes.get("gender").get(0),
+                attributes.get("userInformationType").get(0),
+                attributes.get("birth").get(0),
+                attributes.get("profileImageUrl").get(0)
+        );
     }
 }
