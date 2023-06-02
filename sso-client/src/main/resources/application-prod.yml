@@ -17,8 +17,8 @@ spring:
             redirect-uri: "http://login.socoa.online:8080/realms/master/broker/github/endpoint"
 
 keycloak:
-  client-url: http://${server.domain}
-  server-url: http://${server.domain}:8080
+  client-url: http://login.socoa.online
+  server-url: http://login.socoa.online:8080
 
 socoa:
   domain: socoa.online
