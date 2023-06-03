@@ -30,7 +30,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Bean
     public LogoutSuccessHandler logoutSuccessHandler() {
         SimpleUrlLogoutSuccessHandler successHandler = new SimpleUrlLogoutSuccessHandler();
-        successHandler.setDefaultTargetUrl("http://login.socoa.online:8080/realms/master/protocol/openid-connect/logout");
+        successHandler.setDefaultTargetUrl(keycloakLogoutURL);
         return successHandler;
     }
 
