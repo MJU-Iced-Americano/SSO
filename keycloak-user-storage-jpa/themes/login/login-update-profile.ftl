@@ -84,8 +84,7 @@
                             <label > 성 </label>
                         </div>
                         <div class="mdc-text-field mdc-text-field--with-leading-icon ${properties.kcLabelClass!}">
-                            <label class="mdc-floating-label ${properties.kcLabelClass!}" id="user.attributes.firstNameLabel" for="user.attributes.firstName">성</label>
-                            <input class="mdc-text-field__input ${properties.kcInputClass!}" type="text"  id="user.attributes.firstName" name="user.attributes.firstName" value="${(user.attributes.firstName!'')}" disabled />
+                            <input class="mdc-text-field__input ${properties.kcInputClass!}" type="text"  id="user.attributes.firstName" name="user.attributes.firstName" value="${(user.attributes.firstName!'')}" />
                         </div>
                     </div>
 
@@ -94,8 +93,7 @@
                             <label > 이름 </label>
                         </div>
                         <div class="mdc-text-field mdc-text-field--with-leading-icon ${properties.kcLabelClass!}">
-                            <label class="mdc-floating-label ${properties.kcLabelClass!}"  id="user.attributes.lastNameLabel" for="user.attributes.lastName">이름</label>
-                            <input class="mdc-text-field__input ${properties.kcInputClass!}" type="text"  id="user.attributes.lastName" name="user.attributes.lastName" value="${(user.attributes.lastName!'')}" disabled/>
+                            <input class="mdc-text-field__input ${properties.kcInputClass!}" type="text"  id="user.attributes.lastName" name="user.attributes.lastName" value="${(user.attributes.lastName!'')}" />
                         </div>
                     </div>
 
@@ -104,8 +102,7 @@
                             <label > 이메일 </label>
                         </div>
                         <div class="mdc-text-field mdc-text-field--with-leading-icon ${properties.kcLabelClass!}">
-                            <label class="mdc-floating-label ${properties.kcLabelClass!}" for="user.attributes.email" id="user.attributes.emailLabel">이메일</label>
-                            <input class="mdc-text-field__input ${properties.kcInputClass!}" type="email"  id="user.attributes.email" name="user.attributes.email" value="${(user.attributes.email!'')}" disabled />
+                            <input class="mdc-text-field__input ${properties.kcInputClass!}" type="email"  id="user.attributes.email" name="user.attributes.email" value="${(user.attributes.email!'')}"  />
                         </div>
                     </div>
 
