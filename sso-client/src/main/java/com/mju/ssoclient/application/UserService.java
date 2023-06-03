@@ -6,7 +6,6 @@ import com.mju.ssoclient.domain.UserRepository;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.mju.domain.UserEntity;
 import org.springframework.stereotype.Service;
 
 @Slf4j

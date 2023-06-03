@@ -1,11 +1,6 @@
 package com.mju.ssoclient.application.dto;
 
 import lombok.Getter;
-import org.mju.domain.AdditionalInformation;
-import org.mju.domain.Birth;
-import org.mju.domain.Gender;
-import org.mju.domain.UserEntity;
-import org.mju.domain.UserInformationType;
 
 @Getter
 public class UserResponse {

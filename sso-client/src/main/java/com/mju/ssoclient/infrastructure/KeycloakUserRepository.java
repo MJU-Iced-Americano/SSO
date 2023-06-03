@@ -64,20 +64,17 @@ class KeycloakUserRepository implements UserRepository {
 
     @Override
     public UserResponse findById(final String userId) {
-        List<UserRepresentation> list = usersResource.list();
-        for (UserRepresentation userRepresentation : list) {
+        for (UserRepresentation userRepresentation : usersResource.list()) {
             try {
                 log.info("findUserId : {}  originUserId : {}", userId, userRepresentation.getId());
-                if (!userId.contains(":")) {
-                    if (userRepresentation.getId().contains(userId)) {
+                if (userId.contains(":") && userRepresentation.getId().contains(":")) {
+                    String extractUserId = userId.substring(userId.lastIndexOf(":"));
+                    String extractUserRepresentationId = userRepresentation.getId().substring(userId.lastIndexOf(":"));
+                    if (extractUserId.equals(extractUserRepresentationId)) {
                         return createUserResponse(userRepresentation.getId(), userRepresentation);
                     }
-                }
-                if (!userRepresentation.getId().contains(":")) {
-                    continue;
-                }
-                if (userRepresentation.getId().split(":")[2].equals(userId.split(":")[2])) {
-                    return createUserResponse(userId, userRepresentation);
+                } else if (userRepresentation.getId().equals(userId)) {
+                    return createUserResponse(userRepresentation.getId(), userRepresentation);
                 }
             } catch (Exception e) {
                 break;
